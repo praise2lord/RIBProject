@@ -1,0 +1,42 @@
+{% extends 'crime/RIBStation/mainStation.html' %}
+
+{% block content %}
+<center>
+<a class="btn btn-warning" href="{% url 'home_Station' %}">Back Home</a>
+
+<div class="row">
+
+<h5>List of All Finished Cases in {{rib_station}} ...</h5>
+<hr>
+		<div class="card card-body">
+<table class="table table-sm">
+<tr>
+<th>CaseCode</th>
+<th>Victim</th>
+<th>Phone</th>
+<th>Type</th>
+<th>Case Status</th>
+<th>Case Summary</th>
+<th>More Case Details</th>
+</tr>
+{% for case in cases %}
+		<tr>
+			<td>{{case.case_name}}</td>
+			<td>{{case.victim_name}}</td>
+			<td>{{case.reporter_phone}}</td>
+			<td>{{case.crimeType}}</td>			
+			<td>{{case.status}}</td>
+			<td>{{case.case_desc}}</td>
+            {% comment %} <td>{{case.Suspect.suspects.suspect_status}}</td> {% endcomment %}
+			<td><a class="btn btn-sm btn-primary" href="{% url 'ClosedCaseSuspects' case.id%}">Case Suspects Details</a></td>
+
+		
+		</tr>
+{% endfor %}
+
+</table>
+</div>
+</div>
+
+{% endblock %}
+   

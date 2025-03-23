@@ -1,0 +1,54 @@
+{% extends 'crime/RIBHQ/mainHq.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<!--Message line-->
+{% block myheader %}
+{% for message in messages %}
+<div class="alert alert-success">
+  <strong>Success!</strong> {{message}}.
+</div>    
+{% endfor %}
+{% endblock %}
+<!--End of Message line-->
+<style>
+
+    form button{
+        margin-right: 170px;
+    }
+
+    .contain{
+        display: flex;
+    }
+    .form-group {
+        width: 70%;
+    }
+
+</style>
+<br> <br> 
+      <a href="{% url 'register_stationName' %}" class="btn btn-primary" style="float: right;">Add RIB Commander user</a> <br> <br>
+	  
+
+<div class="row">
+	<div class="col">
+
+<h1>RIBStation Registration</h1>
+
+	<div class="col-md-12">
+		<div class="card card-body">
+			<form action="" method="POST">
+				{% csrf_token %}
+				{{form.user|as_crispy_field}}
+				{{form.station_name|as_crispy_field}}
+				{{form.province|as_crispy_field}}
+				<center>
+				<a class="btn btn-warning" href="{% url 'home_Hq' %}">Cancel</a>
+				<input type="submit" name="Submit" class="btn btn-info">
+			</form>
+
+		</div>
+	</div>
+</div>
+</center>
+
+{% endblock %}

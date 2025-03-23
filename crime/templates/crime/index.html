@@ -1,0 +1,94 @@
+{% load static %}
+ <img src="{% static 'images/hd.jpg' %} "alt="logo" height="77" width="1520">
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome To SCSEA</title>
+    <link rel="shortcut icon" href="{%  static 'favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/></head>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- style css -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- responsive-->
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    <!-- awesome fontfamily -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+</head>
+
+
+    <div class="container"><br>
+    <h3 align="center">WELCOME TO SMART CRIME SCENE EVIDENCES ANALYSIS (SCSEA)</h3><center>
+    <a href="{% url 'login_view' %}" style="background-color: white-blue" class="btn btn-primary btn-block mt-1" >LOGIN </a>
+    </div>
+    <div class="container">
+    <nav class="navbar navbar-expand-sm bg-light navbar-blue">
+        <!-- Brand/logo -->       
+        
+        <!-- Links -->
+        <div class="collapse navbar-collapse justify-content-end">
+
+           <ul class="navbar-nav">
+            <li class="nav-item">
+           
+        </div>
+      </nav>
+       
+        <div id="demo" class="carousel slide" data-ride="carousel">
+  
+            <ul class="carousel-indicators">
+              <li data-target="#demo" data-slide-to="0" class="active"></li>
+              <li data-target="#demo" data-slide-to="1"></li>
+              <li data-target="#demo" data-slide-to="2"></li>
+            </ul>
+          
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img src="{% static 'images/van.jpg' %}" alt="Los Angeles">
+              </div>
+              <div class="carousel-item">
+                <img src="{% static 'images/wanted.jpg' %}" alt="Chicago">
+              </div>
+              {% comment %} <div class="carousel-item">
+                <img src="{% static 'images/inmate.jpg' %}" alt="Chicago">
+              </div> {% endcomment %}
+              <div class="carousel-item">
+                <img src="{% static 'images/cimag.jpg' %}" alt="Chicago">
+              </div>
+               {% comment %} <div class="carousel-item">
+                <img src="{% static 'images/Ca.jpg' %}" alt="New York">
+              </div> {% endcomment %}
+            </div>       
+          
+            <a class="carousel-control-prev" href="#demo" data-slide="prev">
+              <span class="carousel-control-prev-icon"></span>
+            </a>
+            <a class="carousel-control-next" href="#demo" data-slide="next">
+              <span class="carousel-control-next-icon"></span>
+            </a>
+                
+          </center><br>
+    <img src="{% static 'images/pattern.png' %}"alt="logo" height="1" width="1600"> 
+
+</body>
+<script src="{% static 'js/plugin.js' %}"></script>
+<script src="{% static 'js/jquery-3.5.1.slim.min.js' %}" crossorigin="anonymous"></script>
+<script src="{% static 'js/popper.min.js' %}" crossorigin="anonymous"></script>
+<script src="{% static 'js/bootstrap.min.js' %}" crossorigin="anonymous"></script>
+<script src="{% static 'js/jquery.min.js ' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js ' %}"></script>
+<script src="{% static 'js/jquery-3.0.0.min.js ' %}"></script>
+<script src="{% static 'js/custom.js ' %}"></script>
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+<script>
+{% for message in messages %}
+alertify.set('notifier','position', 'top-center');
+alertify.success('{{message}}');
+{% endfor %}
+</script>
+</html>

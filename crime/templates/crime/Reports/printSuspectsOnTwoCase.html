@@ -1,0 +1,140 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suspects List of Two CASES</title>
+    <style>
+        .styled-table {
+            border-collapse: collapse;
+            /* margin: 25px 0; */
+            font-size: 1.0em;
+            font-family: sans-serif;
+            width: 900px;
+            height: 100px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+
+        }
+    .styled-table thead tr {
+        background-color: #0a0a0a;
+        color: #ffffff;
+        
+    }
+     td {
+        width: 70px;
+        height: 70px;
+    } 
+    
+    .styled-table tbody tr {
+        border-bottom: 1px solid #dddddd;
+    }
+    .styled-table tbody tr:last-of-type {
+        border-bottom: 2px solid #070707;
+    }
+    .row {
+                width: 140px;
+                height: 60px;
+                font-size: 11px;
+            }
+    /* .course {
+        font-size: 12px;
+    } */
+    /* .toCenter {
+        margin: 30px;
+    } */
+
+    @page {
+            size: a4 portrait;
+            @frame content_frame {
+                left: 50pt; width: 512pt; top: 90pt; height: 632pt;
+            }
+            @frame footer_frame {
+                -pdf-frame-content: footer_content;
+                left: 50pt; width: 512pt; top: 772pt; height: 20pt;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <img src="http://localhost:8000/static/images/hd.jpg" alt="logo" height="70" width="850">
+    <br>
+    <div id="header_content">
+        <br><br>
+        <center><strong><h2>RIB Station Report</strong> </center><br><br>
+         RIBStation: <strong>{{user}}</strong> <br><br>
+         Location: <strong>{{ribLocation}}</strong><br> <br>
+         Purpose Of This report: <strong>Comparison of Suspect in Case {{nameC1}} And Suspect in Case {{nameC2}}</strong> 
+    </div></h2><br><br>
+    <center>
+        <!-- <h3>{{school}} PRIMARY SCHOOL PERFORMANCE IN THE YEAR OF {{yearSearched}} IN {{quaterSearched}} </h3> -->
+        <h2 style="text-align: center;">SUSPECT LIST ON Case: " {{nameC1}} "</h2>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th class="row">ID No</th>
+                    <th class="row">Name</th>
+                    <th class="row">Gender</th>
+                    <th class="row">DOB</th>
+                    <th class="row">Date Arrested</th>
+                    <th class="row">RIB Station</th>
+                    <th class="row">Case Officer</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sus1 in cases_suspects1 %}
+                <tr>
+                    <td class="row">{{sus1.suspectNID}}</td>
+                    <td class="row">{{sus1.f_name}} {{sus1.l_name}}</td>
+                    <td class="row">{{sus1.gender}}</td>
+                    <td class="row">{{sus1.dob}}</td>
+                    <td class="row">{{sus1.date_arrested}}</td>
+                    <td class="row">{{sus1.ribstation}}</td>
+                    <td class="row">{{sus1.stationuser}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+
+
+        <h2 style="text-align: center;">SUSPECT LIST ON Case: " {{nameC2}} "</h2>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th class="row">ID No</th>
+                    <th class="row">Name</th>
+                    <th class="row">Gender</th>
+                    <th class="row">DOB</th>
+                    <th class="row">Date Arrested</th>
+                    <th class="row">RIB Station</th>
+                    <th class="row">Case Officer</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sus2 in cases_suspects2 %}
+                <tr>
+                    <td class="row">{{sus2.suspectNID}}</td>
+                    <td class="row">{{sus2.f_name}} {{sus2.l_name}}</td>
+                    <td class="row">{{sus2.gender}}</td>
+                    <td class="row">{{sus2.dob}}</td>
+                    <td class="row">{{sus2.date_arrested}}</td>
+                    <td class="row">{{sus2.ribstation}}</td>
+                    <td class="row">{{sus2.stationuser}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </center>
+
+    <br>
+    
+<div id="footer_content"> (c) - page <pdf:pagenumber>
+    of <pdf:pagecount>
+  </div>
+
+</body>
+</html>

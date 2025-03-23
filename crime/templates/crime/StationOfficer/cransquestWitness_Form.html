@@ -1,0 +1,28 @@
+{%  extends 'crime/StationOfficer/mainOfficer.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}<center>
+<h4>Questionaire Form for Witness: {{reporter.f_name}} {{reporter.l_name}}</h4></center>
+<div class="card card-body">
+			<form action="" method="POST">
+				{% csrf_token %}
+            	
+                    <div class="contain">
+                        <div class="form-group">
+                            {{ form.management_form }}
+				{% for field in form %}
+					{{field}}
+					<hr>
+				{% endfor %}
+            </div>
+            <center>
+            <a class="btn btn-warning" href="{% url 'home_Officer' %}">Cancel</a>
+            <input type="submit" name="Submit" class="btn btn-info">           
+            </center>   
+			</form> 
+		
+	</div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Station Cases</title>
+    <style>
+        .styled-table {
+            border-collapse: collapse;
+            /* margin: 25px 0; */
+            font-size: 1.0em;
+            font-family: sans-serif;
+            width: 900px;
+            height: 100px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+
+        }
+    .styled-table thead tr {
+        background-color: #0a0a0a;
+        color: #ffffff;
+        
+    }
+     td {
+        width: 70px;
+        height: 70px;
+    } 
+    
+    .styled-table tbody tr {
+        border-bottom: 1px solid #dddddd;
+    }
+    .styled-table tbody tr:last-of-type {
+        border-bottom: 2px solid #070707;
+    }
+    .row {
+                width: 140px;
+                height: 60px;
+                font-size: 11px;
+            }
+    /* .course {
+        font-size: 12px;
+    } */
+    /* .toCenter {
+        margin: 30px;
+    } */
+
+    @page {
+            size: a4 portrait;
+            @frame content_frame {
+                left: 50pt; width: 512pt; top: 90pt; height: 632pt;
+            }
+            @frame footer_frame {
+                -pdf-frame-content: footer_content;
+                left: 50pt; width: 512pt; top: 772pt; height: 20pt;
+            }
+        }
+    </style>
+</head>
+<body>
+    <br>
+    <img src="http://localhost:8000/static/images/hd.jpg" alt="logo" height="70" width="850">
+    <br>
+    <div id="header_content">
+        <strong>RIB Head-Quater</strong> <br><br>
+    </div>
+    <!-- Sector: <strong>{{school11.sector}}</strong> <br><br>
+    School 1: <strong>{{school11}}</strong> <br><br>
+    School 2: <strong>{{school22}}</strong> <br> -->
+    <center>
+        <!-- <h3>{{school}} PRIMARY SCHOOL PERFORMANCE IN THE YEAR OF {{yearSearched}} IN {{quaterSearched}} </h3> -->
+        <h2 style="text-align: center;">CASES Information</h2>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th class="row">Case Code</th>
+                    <th class="row">Case Type</th>
+                    <th class="row">Case Victim</th>
+                    <th class="row">Case Officer</th>
+                    <th class="row">RIB Station</th>
+                                   
+                   
+                </tr>
+            </thead>
+            <tbody>
+                {% for case in cases %}
+                <tr>
+                    <td class="row">{{case.case_name}}</td>
+                    <td class="row">{{case.crimeType}}</td>
+                    <td class="row">{{case.victim_name}}</td>
+                    <td class="row">{{case.stationuser}}</td>
+                    <td class="row">{{case.ribstation}}</td>
+                    
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </center>
+
+    <br>
+    
+<div id="footer_content"> (c)RIB Inc - page <pdf:pagenumber>
+    of <pdf:pagecount>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+{% extends 'crime/RIBHQ/mainHq.html' %}
+
+{% block content %}
+
+	
+		<div class="row">
+			<div class="col-md">
+				<div class="card card-body">
+
+					<h5>All Questions to be Asked Witness</h5>
+				
+                <a class="btn btn-primary  btn-sm btn-block" href="{% url 'createQuestionForReporter' %}">Add Question</a>
+    
+				<div class="card card-body">
+					<table class="table">
+						<tr>
+                            <th>Question Id</th>
+							<th>Question Name</th>
+							<th>CrimeType Question</th>
+														
+						</tr>
+						{% for question in questions %}
+							<tr>
+								<td>{{question.id}}</td>
+								<td>{{question.questionName}}</td>
+								<td>{{question.crimeType}}</td>
+							</tr>
+						{% endfor %}
+						
+					</table>
+				</div>
+			</div>
+			
+		</div>
+
+{% endblock content %}

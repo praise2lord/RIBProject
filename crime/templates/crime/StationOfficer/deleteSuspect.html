@@ -1,0 +1,25 @@
+{%  extends 'crime/StationOfficer/mainOfficer.html' %}
+
+{% load static %}
+{% block content %}
+
+<br><center>
+<div class="row">
+	<div class="col-md-12">
+		<div class="card card-body">
+
+
+			<p>Are you sure you want to delete Suspect <strong>"{{item}}  {{ item.l_name }}"</strong>?</p>
+
+			<form action="{% url 'delete_suspect' item.id  %}" method="POST">
+				
+				{% csrf_token %}
+				<a class="btn btn-warning" href="{% url 'suspectList' %}">Cancel</a>&nbsp;&nbsp;
+
+				<input class="btn btn-danger" type="submit" name="Confirm">
+			</center></form>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

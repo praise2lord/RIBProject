@@ -1,0 +1,51 @@
+{%  extends 'crime/StationOfficer/mainOfficer.html' %}
+{% block content %}
+<!--Message line-->
+{% block myheader %}
+{% for message in messages %}
+<div class="alert alert-success">
+  <strong>Success!</strong> {{message}}.
+</div>    
+{% endfor %}
+{% endblock %}
+<!--End of Message line-->
+
+<h5>Crime Suspect Witness:</h5>
+<a class="btn btn-primary btn-sm btn-block" href="{% url 'create_reporter' %}">Add Reporter</a>
+<hr>
+<div class="card card-body">
+
+<table class="table table-sm">
+<tr>
+<th>Identification</th>
+<th>First Name</th>
+<th>Last Name</th>
+<th>Gender</th>
+<th>Email</th>
+<th>Phone</th>
+<th>Relation with Suspect</th>
+<th>Suspect</th>
+<th>Guilty?</th>
+<th>Attach Evidence</th>
+
+</tr>
+{% for reporter in reporter %}
+					<tr>
+						<td>{{reporter.reporterNID}}</td>
+						<td>{{reporter.f_name}}</td>
+						<td>{{reporter.l_name}}</td>
+						<td>{{reporter.gender}}</td>
+						<td>{{reporter.email}}</td>
+                        <td>{{reporter.phone}}</td>
+						<td>{{reporter.relation}}</td>
+                        <td>{{reporter.suspect}}</td>
+                        <td>{{reporter.vote}}</td>
+                        <td>{{reporter.note}}</td>
+						{% comment %} <td><a class="btn btn-sm btn-info" href="{% url 'suspect' suspect.id %}">Add Evidence</a></td> {% endcomment %}
+						
+
+					</tr>
+				{% endfor %}
+</table>
+{% endblock %}
+   

@@ -1,0 +1,160 @@
+{% extends 'crime/StationOfficer/mainOfficer.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<!--Message line-->
+{% block myheader %}
+{% for message in messages %}
+<div class="alert alert-success">
+  <strong>Success!</strong> {{message}}.
+</div>    
+{% endfor %}
+{% endblock %}
+<!--End of Message line-->
+
+<style>
+    form button{
+        margin-right: 170px;
+    }
+
+    .contain{
+        display: flex;
+    }
+
+    .form-group {
+        width: 70%;
+    }
+
+    /* CSS for invalid fields */
+    .invalid {
+        border: 1px solid red;
+    }
+
+    /* Error message styling */
+    .error-message {
+        color: red;
+        display: none;
+    }
+</style>
+
+<div class="row">
+<h2> Witness Registration for Suspect called: "<strong>{{suspect.f_name}} {{suspect.l_name}}</strong>"</h2>
+	<div class="col-md-12">
+		<div class="card card-body">
+            
+			<form action="" method="POST" id="witness-form">
+				{% csrf_token %}
+				<div class="contain">
+				<div class="form-group">
+				{{form.reporterNID|as_crispy_field}}
+				<div id="reporter-id-error-message" class="error-message">Reporter ID must start with '1', be exactly 16 digits, and contain only numbers.</div>
+				{{form.f_name|as_crispy_field}}
+				{{form.l_name|as_crispy_field}}
+				{{form.gender|as_crispy_field}}                
+				</div>
+                <div class="form-group">
+				{{form.email|as_crispy_field}}
+				<div id="email-error-message" class="error-message">Please enter a valid email address.</div>
+				{{form.phone|as_crispy_field}}
+				<div id="phone-error-message" class="error-message">Valid phone number (starts with 07).</div>
+				{{form.relation|as_crispy_field}}
+                {{form.vote|as_crispy_field}}
+				</div>
+                <div class="form-group">
+                {{form.note|as_crispy_field}}
+
+				<a class="btn btn-warning" href="{% url 'home_Officer' %}">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<input type="submit" name="Submit" class="btn btn-info"></div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<!-- JavaScript for validation -->
+<script>
+    // Phone number validation (allowing 078, 079, 073, or 072 prefix and 7 digits after that)
+    function validatePhoneNumber() {
+        const phoneField = document.getElementById("{{ form.phone.id_for_label }}");
+        const phoneValue = phoneField.value;
+        const phonePattern = /^(078|079|073|072)[0-9]{7}$/; // Starts with 078, 079, 073, or 072 followed by 7 digits
+        const errorMessage = document.getElementById("phone-error-message");
+
+        if (phoneValue && !phonePattern.test(phoneValue)) {
+            phoneField.classList.add("invalid");
+            errorMessage.style.display = "block";
+        } else {
+            phoneField.classList.remove("invalid");
+            errorMessage.style.display = "none";
+        }
+    }
+
+    // Email validation (checks if the email is in a proper format)
+    function validateEmail() {
+        const emailField = document.getElementById("{{ form.email.id_for_label }}");
+        const emailValue = emailField.value;
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/; // Email pattern for validation
+        const errorMessage = document.getElementById("email-error-message");
+
+        if (emailValue && !emailPattern.test(emailValue)) {
+            emailField.classList.add("invalid");
+            errorMessage.style.display = "block";
+        } else {
+            emailField.classList.remove("invalid");
+            errorMessage.style.display = "none";
+        }
+    }
+ // Reporter ID validation (must be exactly 16 digits, starting with 1, and contain only numbers)
+function validateReporterID() {
+    const reporterIDField = document.getElementById("{{ form.reporterNID.id_for_label }}");
+    const reporterIDValue = reporterIDField.value;
+    const reporterIDPattern = /^1\d{15}$/; // Starts with 1 and followed by exactly 15 digits
+    const errorMessage = document.getElementById("reporter-id-error-message");
+
+    // Check if the value contains any letters or non-numeric characters
+    const nonNumericPattern = /[^0-9]/; // This pattern checks for any non-numeric character
+    if (nonNumericPattern.test(reporterIDValue)) {
+        reporterIDField.classList.add("invalid");
+        errorMessage.textContent = "Reporter ID must contain only numbers.";
+        errorMessage.style.display = "block";
+    } else {
+        // If the Reporter ID starts with something other than '1', show the error message
+        if (reporterIDValue[0] !== '1') {
+            reporterIDField.classList.add("invalid");
+            errorMessage.textContent = "Reporter ID must start with '1'.";
+            errorMessage.style.display = "block";
+        } else {
+            // Only validate when the input length reaches 16 digits (i.e., when the user has entered enough data to evaluate)
+            if (reporterIDValue.length === 16 && !reporterIDPattern.test(reporterIDValue)) {
+                reporterIDField.classList.add("invalid");
+                errorMessage.textContent = "Reporter ID must be exactly 16 digits.";
+                errorMessage.style.display = "block";
+            } else {
+                reporterIDField.classList.remove("invalid");
+                errorMessage.style.display = "none";
+            }
+        }
+    }
+}
+
+
+    // Add event listeners to the fields
+    document.getElementById("{{ form.phone.id_for_label }}").addEventListener('input', validatePhoneNumber);
+    document.getElementById("{{ form.email.id_for_label }}").addEventListener('input', validateEmail);
+    document.getElementById("{{ form.reporterNID.id_for_label }}").addEventListener('input', validateReporterID);
+
+    // Prevent form submission if invalid
+    document.getElementById('witness-form').addEventListener('submit', function (event) {
+        // Trigger validation for all fields
+        const isPhoneValid = validatePhoneNumber();
+        const isEmailValid = validateEmail();
+        const isReporterIDValid = validateReporterID();
+
+        // Check if there are any invalid fields
+        if (!isPhoneValid || !isEmailValid || !isReporterIDValid) {
+            event.preventDefault(); // Prevent form submission if there are invalid fields
+            alert('Please correct the errors before submitting the form.');
+        }
+    });
+</script>
+
+{% endblock %}

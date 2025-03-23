@@ -1,0 +1,43 @@
+{% extends 'crime/RIBHQ/mainHq.html' %}
+
+{% block content %}
+
+<!--Message line-->
+{% block myheader %}
+{% for message in messages %}
+<div class="alert alert-success">
+  <strong>Success!</strong> {{message}}.
+</div>    
+{% endfor %}
+{% endblock %}
+<!--End of Message line-->	
+		<div class="row">
+			<div class="col-md">
+				<div class="card card-body">
+
+					<h5>All Answers to be respond </h5>
+				
+                <a class="btn btn-primary  btn-sm btn-block" href="{% url 'createAnswer' %}">Add Answer</a>
+    
+				<div class="card card-body">
+					<table class="table">
+						<tr>
+                            <th>Answer Id</th>
+							<th>Answer Name</th>
+														
+						</tr>
+						{% for answer in answers %}
+							<tr>
+								<td>{{answer.id}}</td>
+								<td>{{answer.AnswerName}}</td>
+								
+							</tr>
+						{% endfor %}
+						
+					</table>
+				</div>
+			</div>
+			
+		</div>
+
+{% endblock content %}

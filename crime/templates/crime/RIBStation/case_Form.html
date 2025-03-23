@@ -1,0 +1,168 @@
+{% extends 'crime/RIBStation/mainStation.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<!--Message line-->
+{% block myheader %}
+{% for message in messages %}
+<div class="alert alert-success">
+  <strong>Success!</strong> {{message}}.
+</div>    
+{% endfor %}
+{% endblock %}
+<!--End of Message line-->
+<style>
+
+    form button{
+        margin-right: 170px;
+    }
+
+    .contain{
+        display: flex;
+    }
+    .form-group {
+        width: 70%;
+    }
+
+    /* CSS for invalid fields */
+    .invalid {
+        border: 1px solid red;
+    }
+
+    /* Error message styling */
+    .error-message {
+        color: red;
+        display: none;
+    }
+
+</style>
+<div class="row">
+<h2>Case Registration</h2>
+<div class="col-md-12">
+    <div class="card card-body">
+
+        <form action="" method="POST" id="case-form">
+            {% csrf_token %}
+            <div class="contain">
+                <div class="form-group">
+                    {{ form.case_name|as_crispy_field }}
+                    {{ form.crimeType|as_crispy_field }}
+                    {{ form.victim_name|as_crispy_field }}
+                    <label for="{{ form.victim_age.id_for_label }}">Victim's Date of Birth:</label>
+                    <input type="date" id="{{ form.victim_age.id_for_label }}" name="{{ form.victim_age.name }}" class="form-control" required>
+                    <div id="age-error-message" class="error-message">Please select a valid date of birth (Victim's date of birth should not be in the future and should be after 1900).</div>
+                </div>
+                <div class="form-group">
+                    {{ form.reporter_name|as_crispy_field }}
+                    {{ form.reporter_email|as_crispy_field }}
+                    
+                    <div id="email-error-message" class="error-message">Please enter a valid email address.</div>
+                    
+                    <div id="phone-error-message" class="error-message">Please enter a valid phone number (starting with +250 and 9 digits).</div>
+                    {{ form.reporter_phone|as_crispy_field }}
+
+                    {{ form.stationuser|as_crispy_field }}
+                </div>
+                <div class="form-group">
+                    {{ form.victim_address|as_crispy_field }}
+
+                    {{ form.case_desc|as_crispy_field }}
+                    <center>
+                        <a class="btn btn-warning" href="{% url 'home_Station' %}">Cancel</a>&nbsp;&nbsp;
+                        <input type="submit" name="Submit" class="btn btn-info">
+                    </center>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+</div>
+
+<!-- JavaScript for validation -->
+<script>
+    // Email validation
+    function validateEmail() {
+        const emailField = document.getElementById("{{ form.reporter_email.id_for_label }}");
+        const emailValue = emailField.value;
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // Basic email pattern
+        const errorMessage = document.getElementById("email-error-message");
+
+        if (!emailPattern.test(emailValue)) {
+            emailField.classList.add("invalid");
+            errorMessage.style.display = "block";
+        } else {
+            emailField.classList.remove("invalid");
+            errorMessage.style.display = "none";
+        }
+    }
+
+    // Phone number validation (allowing +250 prefix and 9 digits)
+    function validatePhoneNumber() {
+        const phoneField = document.getElementById("{{ form.reporter_phone.id_for_label }}");
+        const phoneValue = phoneField.value;
+        const phonePattern = /^\+250[0-9]{9}$/; // Starts with +250 followed by 9 digits
+        const errorMessage = document.getElementById("phone-error-message");
+
+        if (!phonePattern.test(phoneValue)) {
+            phoneField.classList.add("invalid");
+            errorMessage.style.display = "block";
+        } else {
+            phoneField.classList.remove("invalid");
+            errorMessage.style.display = "none";
+        }
+    }
+
+    // Date of Birth validation (calculating age from DOB)
+    function validateAge() {
+        const dobField = document.getElementById("{{ form.victim_age.id_for_label }}");
+        const dobValue = dobField.value;
+        const errorMessage = document.getElementById("age-error-message");
+
+        if (!dobValue) {
+            dobField.classList.add("invalid");
+            errorMessage.style.display = "block";
+            return false;
+        }
+
+        const today = new Date();
+        const birthDate = new Date(dobValue);
+
+        // Check if the birthdate is in the future
+        if (birthDate > today) {
+            dobField.classList.add("invalid");
+            errorMessage.textContent = "Date of birth cannot be in the future.";
+            errorMessage.style.display = "block";
+            return false;
+        }
+
+        // Check if the year is before 1900
+        if (birthDate.getFullYear() < 1900) {
+            dobField.classList.add("invalid");
+            errorMessage.textContent = "Victim's date of birth must be after 1900.";
+            errorMessage.style.display = "block";
+            return false;
+        }
+
+        dobField.classList.remove("invalid");
+        errorMessage.style.display = "none";
+        return true;
+    }
+
+    // Add event listeners to the fields
+    document.getElementById("{{ form.reporter_email.id_for_label }}").addEventListener('input', validateEmail);
+    document.getElementById("{{ form.reporter_phone.id_for_label }}").addEventListener('input', validatePhoneNumber);
+    document.getElementById("{{ form.victim_age.id_for_label }}").addEventListener('change', validateAge);
+
+    // Prevent form submission if invalid
+    document.getElementById('case-form').addEventListener('submit', function (event) {
+        // Trigger validation for all fields
+        const isPhoneValid = validatePhoneNumber();
+        const isEmailValid = validateEmail();
+        const isAgeValid = validateAge();
+
+
+    });
+</script>
+
+{% endblock %}

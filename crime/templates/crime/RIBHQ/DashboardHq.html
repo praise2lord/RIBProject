@@ -1,0 +1,192 @@
+ {% extends 'crime/RIBHQ/mainHq.html' %}
+
+{% block content %}
+{%  include 'crime/RIBHQ/statusHq.html' %}  
+<!--Message line-->
+{% comment %} {% block myheader %}
+{% for message in messages %}
+<div class="alert alert-success">
+  <strong>Success!</strong> {{message}}.
+</div>    
+{% endfor %}
+{% endblock %} {% endcomment %}
+<!--End of Message line-->
+
+<br><br>
+<div class="row">
+	<div class="col-md-4">
+		<canvas id="myChart" width="200" height="110"></canvas>
+	</div>
+
+	<div class="col-md-4">
+		<canvas id="myChart1" width="200" height="110"></canvas>
+	</div>
+	<div class="col-md-4">
+		<canvas id="myChart2" width="200" height="110"></canvas>
+	</div>
+</div>
+<br><br>
+<script>
+const ctx = document.getElementById('myChart').getContext('2d');
+const myChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: ['RemeraCases', 'KicukiroCases', 'RwezamenyoCases', 'MuhangaCases', 'NyagatareCases', 'GatunaCases', 'RuliCases'],
+        datasets: [{
+            label: '# of Cases per RIB Station',
+            data: ['{{cases_remera}}', '{{cases_kicukiro}}', '{{cases_rwezamenyo}}', '{{cases_muhanga}}',
+             '{{cases_nyagatare}}', '{{cases_gatuna}}', '{{cases_ruli}}'],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(9, 97, 47, 0.2)',
+                'rgba(129, 94, 4, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(105, 155, 225, 0.2)',
+                'rgb(91, 187, 242)',
+
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 19, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(75, 192, 19, 1)',
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+const ctx1 = document.getElementById('myChart1').getContext('2d');
+const myChart1 = new Chart(ctx1, {
+    type: 'bar',
+    data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun','Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+        datasets: [{
+            label: '# of suspects per month',
+            data: ['{{january}}', '{{february}}', '{{march}}', '{{april}}', '{{may}}', '{{june}}', '{{july}}', '{{august}}',' {{september}}', '{{october}}', '{{november}}', '{{december}}'],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+				'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+				'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+const ctx2 = document.getElementById('myChart2').getContext('2d');
+const myChart2 = new Chart(ctx2, {
+    type: 'pie',
+    data: {
+        labels: ['Robbery cases', 'Violent cases', 'Murder cases'],
+        datasets: [{
+            label: '# of Votes',
+            data: ['{{robbery_cases}}', '{{violent_cases}}', '{{murder_cases}}'],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                // 'rgba(75, 192, 192, 0.2)',
+                // 'rgba(153, 102, 255, 0.2)',
+                // 'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                // 'rgba(75, 192, 192, 1)',
+                // 'rgba(153, 102, 255, 1)',
+                // 'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+</script>
+
+
+
+
+</div>
+</div>
+
+
+{% comment %} <table class="table table-sm">
+<tr>
+<th>Identification</th>
+<th>Name</th>
+<th>Phone</th>
+<th>Date Arrested</th>
+<th>Crime type</th>
+<th>Relation</th>
+<th>View</th>
+
+</tr>
+{% for suspect in suspects %}
+					<tr>
+						<td>{{suspect.suspectNID}}</td>
+						<td>{{suspect.f_name}}</td>
+						<td>{{suspect.phone}}</td>
+						<td>{{suspect.date_arrested}}</td>
+						<td>{{suspect.case}}</td>
+						<td>{{suspect.relation}}</td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'suspect' suspect.id %}">View</a></td>
+						
+
+					</tr>
+				{% endfor %}
+</table>
+
+</div>{% endcomment %}
+
+{% endblock %} 
+   

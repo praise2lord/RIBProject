@@ -1,0 +1,49 @@
+{% extends 'crime/RIBHQ/mainHq.html' %}
+
+{% block content %}
+<!--Message line-->
+{% block myheader %}
+{% for message in messages %}
+<div class="alert alert-success">
+  <strong>Success!</strong> {{message}}.
+</div>    
+{% endfor %}
+{% endblock %}
+<!--End of Message line-->
+
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <h5>All RIB Stations</h5>
+
+            <a class="btn btn-primary btn-sm btn-block" href="{% url 'createRIBStation' %}">Add RIB Stations</a>
+
+            <div class="card card-body">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Station Name</th>
+                            <th>Location</th>
+                            {% comment %} <th>Update</th> {% endcomment %}
+                            {% comment %} <th>Delete</th> {% endcomment %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for station in stations %}
+                        <tr>
+                            <td>{{station.user}}</td>
+                            <td>{{station.station_name}}</td>
+                            <td>{{station.province}}</td>
+                             {% comment %} <td><a class="btn btn-sm btn-info" href="">Update</a></td> {% endcomment %}
+                             {% comment %} <td><a class="btn btn-sm btn-danger" href="{% url 'errorDelete' %}">Delete</a></td> {% endcomment %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

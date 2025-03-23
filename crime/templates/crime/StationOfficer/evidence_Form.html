@@ -1,0 +1,54 @@
+{%  extends 'crime/StationOfficer/mainOfficer.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<!--Message line-->
+{% block myheader %}
+{% for message in messages %}
+<div class="alert alert-success">
+  <strong>Success!</strong> {{message}}.
+</div>    
+{% endfor %}
+{% endblock %}
+<!--End of Message line-->
+<style>
+
+    form button{
+        margin-right: 170px;
+    }
+
+    .contain{
+        display: flex;
+    }
+    .form-group {
+        width: 70%;
+    }
+
+</style>
+
+<div class="row">
+<h1>Evidence Registration for Suspect "<strong>{{suspect.l_name}} {{suspect.f_name}}</strong>"</h1>
+	<div class="col-md-12">
+		<div class="card card-body">
+            
+			<form action="" method="POST" enctype="multipart/form-data">
+				{% csrf_token %}
+				<div class="contain">
+				{{form.title|as_crispy_field}}			
+				{{form.evidenceCategory|as_crispy_field}}			
+				{{form.level|as_crispy_field}}
+				{{form.evidencerimage|as_crispy_field}}
+				{{form.evidence_note|as_crispy_field}}	
+				
+				
+				<center>
+				<a class="btn btn-warning" href="{% url 'evidence' %}">Cancel</a>
+				<input type="submit" name="Submit" class="btn btn-info"></div>
+			</form>
+		
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Primary or Release Suspect Report</title>
+    <style>
+
+    @page {
+            size: a4 portrait;
+            @frame content_frame {
+                left: 50pt; width: 512pt; top: 60pt; height: 632pt;
+            }
+            @frame footer_frame {
+                -pdf-frame-content: footer_content;
+                left: 50pt; width: 512pt; top: 772pt; height: 20pt;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="header_content">
+        REPUBLIC OF RWANDA<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <img src="http://localhost:8000/static/images/Rdalogo.png" alt="logo" height="65" width="70">
+ 
+            <br><br>
+             RIBStation: <strong>{{suspect.ribstation.station_name}} Station</strong> <br>
+             Station User: <strong>{{suspect.stationuser.l_name}} {{suspect.stationuser.f_name}}</strong><br> <br>
+             Date: <strong>{{today}}</strong> 
+             <center>
+        <img src="http://localhost:8000/static/images/riblogo.png" alt="logo" height="70" width="75"><br>
+        {{suspect.ribstation.station_name}}
+            
+           <strong><h2>Primary Suspect Detection or Suspect Release Report</strong> </center><br>
+    
+        </div>
+ 
+        <div id="content_frame" style="line-height: 1.8; font-size: 11px;">
+            <p>Dear <strong>{{suspect.f_name}} {{suspect.l_name}},</strong></p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            
+            This paper is to let you know that you <strong>{{suspect.f_name}} {{suspect.l_name}}</strong> with National ID of <strong>{{suspect.suspectNID}}</strong>,
+             telephone of <strong>{{suspect.phone}}</strong>, with address of <strong>{{suspect.province}}</strong>, <strong>{{suspect.district}}</strong> District,
+              <strong>{{suspect.cell}}</strong> Cell and <strong>{{suspect.village}}</strong> Village, parents of <strong>{{suspect.father_name}}</strong> and <strong>{{suspect.mother_name}}</strong>, 
+            The case code <strong>{{case}}</strong> of <strong>{{case.crimeType}}</strong> as crime type {% if suspect.suspect_status == "Free of Crime" %}
+            that you were suspected {% elif suspect.suspect_status == "Primary Suspect" %} you are being suspected {% endif %}, also with victim {% if suspect.suspect_status == "Free of Crime" %}
+            was {% elif suspect.suspect_status == "Primary Suspect" %} is {% endif %} <strong>{{case.victim_name}}</strong> who was born in <strong>{{case.victim_age}}</strong> living in {{case.victim_address}}. 
+            This case {% if suspect.suspect_status == "free" %} were being monitored and cloded by 
+            {% elif suspect.suspect_status == "primary_suspect" %}  is being monitored and it has been sent to court by Officer{% endif %} <strong>{{case.stationuser.l_name}} {{case.stationuser.f_name}}</strong> who works at <strong>{{case.ribstation}}</strong></p>
+
+            {% if reporters %}
+            <p>The repoters for the above case:</p>
+
+            <ul>
+                {% for reporter in reporters %}
+                    <li>Name: <strong>{{reporter.f_name}} {{reporter.l_name}}</strong> with National ID: <strong>{{reporter.reporterNID}}</strong></li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            {% if evidences %}
+            <p>The evidences for the above case:</p>
+
+            <ul>
+                {% for evidence in evidences %}
+                    <li>Evidence title: <strong>{{evidence.title}}</strong> with category: <strong>{{evidence.evidenceCategory}} category</strong></li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            
+            <br>
+            <p style="line-height: 1.8; font-size: 11px;">
+            {% if suspect.suspect_status == "free" %} This is officialy prove that <strong>you are Free from the above case</strong> for the reason of processes went through to find primary suspects
+            {% elif suspect.suspect_status == "primary_suspect" %} This is officialy prove that <strong>you are a Primary suspect from the above case</strong> for the reason of the processes went through to Find the primary suspects and your Case Files have been sent to court              
+            
+            {% elif suspect.suspect_status == "middle" %} This is officialy prove that <strong>you are neither a Primary suspect from the above case nor Free</strong> for the reason of the processes went through to find the Primary suspects and Thus case needs to be well investigated deeply{% endif %}</p>
+
+        </div>
+
+        <br>
+        <p style="margin-left: 500px;"><strong> {{suspect.stationuser.rank}},{{suspect.stationuser.l_name}} {{suspect.stationuser.f_name}}</strong></p>
+        <p style="margin-left: 500px;"><strong>{{suspect.ribstation.station_name}}</strong></p>
+        <p style="margin-left: 500px;"><img src="http://localhost:8000/static/images/comfirmed.jpg" height="50" width="80">
+        </p>
+    <br>
+    
+<div id="footer_content"> (c)RIB Inc - page <pdf:pagenumber>
+    of <pdf:pagecount>
+  </div>
+
+</body>
+</html>

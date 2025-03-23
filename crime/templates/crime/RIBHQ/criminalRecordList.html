@@ -1,0 +1,69 @@
+{% extends 'crime/RIBHQ/mainHq.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+<h5>These are our Commanders </h5>{{officers}}
+<h5>In these RIBStations</h5>{{stations}}
+<h5>We have these Cases</h5>{{cases}}
+<h5>And with those cases We have these suspect</h5>{{suspects}}
+
+
+{% block content %}
+
+
+    <div class="row">
+			<div class="col-md">
+				<div class="card card-body">
+
+					<h5>All suspect in All Cases</h5>
+          <table><tr><td>
+            <a class="btn btn-danger" href="{% url 'criminalRecord' %}">Clear</a></tr></td>
+              <form method="get">
+                {{myFilter.form}}
+                <button class="btn btn-primary mb-2" type="SUBMIT" >Search For Suspect Criminal record
+                </button>
+               </form>
+
+             <tr><td><a class="btn btn-primary  btn-sm btn-block" href="{%  url 'printSuspectsHQ' %}">Generate PDF</a>
+            </tr></td></table>
+				</div>
+				<div class="card card-body">
+					<table class="table">
+						<tr>
+                            <th>Suspect ID</th>
+							<th>Full Name</th>
+							<th>Phone</th>
+                            <th>Date Arrested</th>
+							<th>Date Released</th>
+                            <th>RIBStation</th>
+                            <th>Officer Incharge</th>
+							<th>Final Decision</th>
+						</tr>
+						{% for suspect in suspects %}
+							<tr>
+								<td>{{suspect.suspectNID}}</td>
+								<td>{{suspect.f_name}} {{suspect.l_name}}</td>
+                                <td>{{suspect.phone}}</td>
+                                <td>{{suspect.date_arrested}}</td>
+                                <td>{{suspect.date_released}}</td>
+                                <td>{{suspect.ribstation}}</td>
+                                <td>{{suspect.stationuser}}</td>
+								<td>{{suspect.suspect_status}}</td>
+			
+							</tr>
+						{% endfor %}l
+						
+					</table>
+				</div>
+			</div>
+			
+		</div>
+
+						
+					</table>
+				</div>
+			</div>
+			
+		</div>
+
+{% endblock content %}

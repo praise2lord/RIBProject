@@ -1,0 +1,55 @@
+{% load static %}
+
+{% block styles %}
+  <style>
+    .active {
+      background-color: rgb(51, 135, 245);
+    }
+  </style>
+{% endblock styles %}
+
+ <img src="{% static 'images/akamogi.gif' %}"alt="logo" >
+
+ <img src="{% static 'images/RIB_Banner_final.gif' %}"alt="logo" align="right">
+ <center><b>{{today}}</b></center>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="{% if 'home_Station' in request.path %} nav-item active {% endif %}">
+        <a class="nav-link" href="{% url 'home_Station' %}">Dashboard </a>
+      </li>
+
+     
+      
+      <li class="{% if 'officerList' in request.path %} nav-item active {% endif %}">
+        <a class="nav-link" href="{% url 'officerList' %}">Station Officers</a>
+      </li>
+
+      <li class="{% if 'caseList' in request.path %} nav-item active {% elif 'create_case' in request.path %} nav-item active {% elif 'update_case' in request.path %} nav-item active {% endif %}">
+        <a class="nav-link" href="{% url 'caseList' %}">Crime Case</a>
+      </li>    
+        
+      </li>
+
+      <li class="{% if 'stationClosedCases' in request.path %} nav-item active  {% elif 'ClosedCaseSuspects' in request.path %} nav-item active {% endif %}">
+        <a class="nav-link" href="{% url 'stationClosedCases' %}">Closed Cases</a>
+      </li>    
+        
+      </li>
+      
+      <li class="{% if 'stationStatReporting' in request.path %} nav-item active {% endif %}">
+        <a class="nav-link" href="{% url 'stationStatReporting' %}">Reports</a>
+      </li>
+   
+         </div>
+         
+         <ul class="list-unstyled CTAs">
+       {% csrf_token%}
+        <a href="{% url 'logout' %}" style="background-color: #7CFC00 " class="btn btn-primary btn-block mt-5" >LOGOUT {{request.user}}</a>
+      
+    </ul>
+</nav>

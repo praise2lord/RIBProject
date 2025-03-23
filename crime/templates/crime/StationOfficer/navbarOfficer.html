@@ -1,0 +1,41 @@
+{% load static %}
+
+{% block styles %}
+  <style>
+    .active {
+      background-color: rgb(8, 128, 98);
+    }
+  </style>
+{% endblock styles %}
+
+ <img src="{% static 'images/Capture.JPG' %}"alt="logo" height="90" width="1530">
+<center><b>{{today}} </b></center>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+    
+      <li class="{% if 'home_Officer' in request.path %} nav-item active {% endif %}">
+        <a class="nav-link" href="{% url 'home_Officer' %}">Dashboard </a>
+      </li>
+
+      <li class="{% if 'crimeSuspect' in request.path %} nav-item active {% elif 'suspect' in request.path %} nav-item active {% elif 'create_evidence' in request.path %} nav-item active {% elif 'witnes' in request.path %} nav-item active {% elif 'createReporter' in request.path %} nav-item active {% elif 'evidence' in request.path %} nav-item active {% elif 'viewCaseSuspects' in request.path %} nav-item active {% endif %}">
+        <a class="nav-link" href="{% url 'crimeSuspect' %}">Crime Suspect </a>
+      </li>
+      
+
+        
+        <li class="{% if 'casesAnalyse' in request.path %} nav-item active {% elif 'analyseCaseSuspects' in request.path %} nav-item active {% elif 'findPrimarySuspect' in request.path %} nav-item active {% endif %}">
+        <a class="nav-link" href="{% url 'casesAnalyse' %}">Closed Cases</a>
+      </li>
+         </div>
+         <ul class="list-unstyled CTAs">
+       {% csrf_token%}
+        <a href="{% url 'logout' %}" style="background-color: #7CFC08 " class="btn btn-primary btn-block mt-5" >LOGOUT {{request.user}}</a>
+      
+    </ul>
+   
+</nav> 

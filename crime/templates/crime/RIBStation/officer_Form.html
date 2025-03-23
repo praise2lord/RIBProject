@@ -1,0 +1,200 @@
+{% extends 'crime/RIBStation/mainStation.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<!-- Message line -->
+{% block myheader %}
+{% for message in messages %}
+<div class="alert alert-success">
+  <strong>Success!</strong> {{ message }}.
+</div>
+{% endfor %}
+{% endblock %}
+<!-- End of Message line -->
+
+<style>
+    form button {
+        margin-right: 170px;
+    }
+
+    .contain {
+        display: flex;
+    }
+
+    .form-group {
+        width: 70%;
+    }
+
+    /* CSS for invalid fields */
+    .invalid {
+        border: 1px solid red;
+    }
+
+    /* Error message styling */
+    .error-message {
+        color: red;
+        display: none;
+    }
+</style>
+
+<br><br>
+<a href="{% url 'register_ribofficer' %}" class="btn btn-primary" style="float: right;">Add Rib Officer User</a>
+<br><br>
+
+<div class="row">
+    <h1>Station User Registration</h1>
+
+    <div class="col-md-12">
+        <div class="card card-body">
+            <form action="{% url 'createOfficer' %}" method="POST" enctype="multipart/form-data" id="officer-form">
+                {% csrf_token %}
+                <div class="contain">
+                    <div class="form-group">
+                        {{ form.user|as_crispy_field }}
+                        {{ form.nationalId|as_crispy_field }}
+                        <div id="error-message" class="error-message">Please enter only numeric values.</div>
+                        {{ form.f_name|as_crispy_field }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.l_name|as_crispy_field }}
+                        {{ form.gender|as_crispy_field }}
+                        {{ form.phone|as_crispy_field }}
+                        <div id="phone-error-message" class="error-message">Please enter a valid phone number (10 digits).</div>
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.email|as_crispy_field }}
+                        <div id="email-error-message" class="error-message">Please enter a valid email address.</div>
+                        {{ form.rank|as_crispy_field }}
+                        {{ form.recruit_year|as_crispy_field }}
+                        <div id="year-error-message" class="error-message">Please enter a valid year (4-digit number between 2010 and the current year).</div>
+                    </div>
+
+                    <div class="form-group">
+                        {% comment %} {{ form.ribstation|as_crispy_field }} {% endcomment %}
+                        {{ form.officerimage|as_crispy_field }}
+                        <div id="image-error-message" class="error-message">Please upload a valid image (JPG or PNG only).</div>
+
+                        <center>
+                            <a class="btn btn-warning" href="{% url 'createOfficer' %}">Cancel</a>&nbsp;&nbsp;
+                            <input type="submit" name="Submit" class="btn btn-info">
+                        </center>
+                    </div>
+                </div>
+            </form>
+
+            <!-- JavaScript for validation -->
+            <script>
+                // National ID validation
+                function toggleFieldStatus() {
+                    const officerIdField = document.getElementById("{{ form.nationalId.id_for_label }}");
+                    const errorMessage = document.getElementById("error-message");
+                    const value = officerIdField.value;
+
+                    if (/^\d+$/.test(value)) {
+                        officerIdField.classList.remove("invalid");
+                        errorMessage.style.display = "none";
+                    } else {
+                        officerIdField.classList.add("invalid");
+                        errorMessage.style.display = "block";
+                    }
+                }
+
+                // Email validation
+                function validateEmail() {
+                    const emailField = document.getElementById("{{ form.email.id_for_label }}");
+                    const emailValue = emailField.value;
+                    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+                    const errorMessage = document.getElementById("email-error-message");
+
+                    if (!emailPattern.test(emailValue)) {
+                        emailField.classList.add("invalid");
+                        errorMessage.style.display = "block";
+                    } else {
+                        emailField.classList.remove("invalid");
+                        errorMessage.style.display = "none";
+                    }
+                }
+
+                // Phone number validation
+                function validatePhoneNumber() {
+                    const phoneField = document.getElementById("{{ form.phone.id_for_label }}");
+                    const phoneValue = phoneField.value;
+                    const phonePattern = /^[0-9]{10}$/; // Adjust pattern as necessary
+                    const errorMessage = document.getElementById("phone-error-message");
+
+                    if (!phonePattern.test(phoneValue)) {
+                        phoneField.classList.add("invalid");
+                        errorMessage.style.display = "block";
+                    } else {
+                        phoneField.classList.remove("invalid");
+                        errorMessage.style.display = "none";
+                    }
+                }
+
+                // Image validation (file type and size)
+                function validateImage() {
+                    const imageField = document.getElementById("{{ form.officerimage.id_for_label }}");
+                    const imageValue = imageField.files[0];
+                    const errorMessage = document.getElementById("image-error-message");
+
+                    if (imageValue) {
+                        const allowedTypes = ['image/jpeg', 'image/png'];
+                        if (!allowedTypes.includes(imageValue.type)) {
+                            imageField.classList.add("invalid");
+                            errorMessage.style.display = "block";
+                        } else {
+                            imageField.classList.remove("invalid");
+                            errorMessage.style.display = "none";
+                        }
+                    }
+                }
+
+                // Recruit year validation
+                function validateRecruitYear() {
+                    const yearField = document.getElementById("{{ form.recruit_year.id_for_label }}");
+                    const yearValue = yearField.value;
+                    const currentYear = new Date().getFullYear();
+                    const yearPattern = /^[0-9]{4}$/;
+                    const errorMessage = document.getElementById("year-error-message");
+
+                    // Check if the year is a valid 4-digit number between 1900 and the current year
+                    if (!yearPattern.test(yearValue) || yearValue < 2010 || yearValue > currentYear) {
+                        yearField.classList.add("invalid");
+                        errorMessage.style.display = "block";
+                    } else {
+                        yearField.classList.remove("invalid");
+                        errorMessage.style.display = "none";
+                    }
+                }
+
+                // Add event listeners to the fields
+                document.getElementById("{{ form.nationalId.id_for_label }}").addEventListener('input', toggleFieldStatus);
+                document.getElementById("{{ form.email.id_for_label }}").addEventListener('input', validateEmail);
+                document.getElementById("{{ form.phone.id_for_label }}").addEventListener('input', validatePhoneNumber);
+                document.getElementById("{{ form.officerimage.id_for_label }}").addEventListener('change', validateImage);
+                document.getElementById("{{ form.recruit_year.id_for_label }}").addEventListener('input', validateRecruitYear);
+
+                // Prevent form submission if invalid
+                document.getElementById('officer-form').addEventListener('submit', function (event) {
+                    // Trigger validation for all fields
+                    toggleFieldStatus();
+                    validateEmail();
+                    validatePhoneNumber();
+                    validateImage();
+                    validateRecruitYear();
+
+                    // Check if there are any invalid fields
+                    const invalidFields = document.querySelectorAll('.invalid');
+                    if (invalidFields.length > 0) {
+                        event.preventDefault(); // Prevent form submission if there are invalid fields
+                        alert('Please correct the errors before submitting the form.');
+                    }
+                });
+            </script>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

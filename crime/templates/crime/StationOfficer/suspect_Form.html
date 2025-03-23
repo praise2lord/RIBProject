@@ -1,0 +1,179 @@
+{% extends 'crime/StationOfficer/mainOfficer.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<!--Message line-->
+{% block myheader %}
+{% for message in messages %}
+<div class="alert alert-success">
+  <strong>Success!</strong> {{message}}.
+</div>    
+{% endfor %}
+{% endblock %}
+<!--End of Message line-->
+
+<style>
+    form button{
+        margin-right: 170px;
+    }
+
+    .contain{
+        display: flex;
+    }
+    .form-group {
+        width: 70%;
+    }
+
+    /* CSS for invalid fields */
+    .invalid {
+        border: 1px solid red;
+    }
+
+    /* Error message styling */
+    .error-message {
+        color: red;
+        display: none;
+    }
+
+</style>
+
+<div class="row">
+    <br><br>
+    <h3>Suspect Reg on the case with Case Code:"<strong>{{case.case_name}}</strong>" CaseType:"<strong>{{case.crimeType}}</strong>" Victim:"<strong>{{case.victim_name}}</strong>"</h3>
+
+    <div class="col-md-12">
+        <div class="card card-body">
+
+            <form action="" method="POST" enctype="multipart/form-data" id="suspect-form">
+                {% csrf_token %}
+                <div class="contain">
+                    <div class="form-group">
+                        {{ form.suspectNID|as_crispy_field }}
+                        {{ form.f_name|as_crispy_field }}
+                        {{ form.l_name|as_crispy_field }}
+                        {{ form.gender|as_crispy_field }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.dob|as_crispy_field }}
+                        <div id="dob-error-message" class="error-message">Please enter a valid date of birth (Not in the future, after 1900, and age must be at least 18 years old).</div>
+                        {{ form.phone|as_crispy_field }}
+                        <div id="phone-error-message" class="error-message">Valid phone number (starts with 07).</div>
+                        {{ form.relation|as_crispy_field }}
+                        {{ form.father_name|as_crispy_field }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.mother_name|as_crispy_field }}
+                        {{ form.province|as_crispy_field }}
+                        {{ form.district|as_crispy_field }}
+                        {{ form.cell|as_crispy_field }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.village|as_crispy_field }}
+                        {% comment %} {{ form.ribstation|as_crispy_field }} {% endcomment %}
+                        {{ form.suspectimage|as_crispy_field }}
+                        {{ form.note|as_crispy_field }}
+                    </div>
+
+                    <center>
+                        <a class="btn btn-warning" href="{% url 'home_Officer' %}">Cancel</a>
+                        <input type="submit" name="Submit" class="btn btn-info">
+                    </center>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for validation -->
+<script>
+    // Phone number validation (allowing 078, 079, 073, or 072 prefix and 7 digits after that)
+    function validatePhoneNumber() {
+        const phoneField = document.getElementById("{{ form.phone.id_for_label }}");
+        const phoneValue = phoneField.value;
+        const phonePattern = /^(078|079|073|072)[0-9]{7}$/; // Starts with 078, 079, 073, or 072 followed by 7 digits
+        const errorMessage = document.getElementById("phone-error-message");
+
+        if (!phonePattern.test(phoneValue)) {
+            phoneField.classList.add("invalid");
+            errorMessage.style.display = "block";
+            return false;
+        } else {
+            phoneField.classList.remove("invalid");
+            errorMessage.style.display = "none";
+            return true;
+        }
+    }
+
+    // Date of Birth validation (checking future date and birth year after 1900, and age must be >= 18)
+    function validateDOB() {
+        const dobField = document.getElementById("{{ form.dob.id_for_label }}");
+        const dobValue = dobField.value;
+        const errorMessage = document.getElementById("dob-error-message");
+
+        if (!dobValue) {
+            dobField.classList.add("invalid");
+            errorMessage.style.display = "block";
+            return false;
+        }
+
+        const today = new Date();
+        const birthDate = new Date(dobValue);
+
+        // Check if the birthdate is in the future
+        if (birthDate > today) {
+            dobField.classList.add("invalid");
+            errorMessage.textContent = "Date of birth cannot be in the future.";
+            errorMessage.style.display = "block";
+            return false;
+        }
+
+        // Check if the year is before 1900
+        if (birthDate.getFullYear() < 1900) {
+            dobField.classList.add("invalid");
+            errorMessage.textContent = "Suspect's age must be after 1900.";
+            errorMessage.style.display = "block";
+            return false;
+        }
+
+        // Calculate age (current year - birth year)
+        const age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+        
+        // If birthday hasn't happened this year, subtract 1 from the age
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+
+        // Check if age is less than 18
+        if (age < 18) {
+            dobField.classList.add("invalid");
+            errorMessage.textContent = "Suspect must be at least 18 years old.";
+            errorMessage.style.display = "block";
+            return false;
+        }
+
+        dobField.classList.remove("invalid");
+        errorMessage.style.display = "none";
+        return true;
+    }
+
+    // Add event listeners to the fields
+    document.getElementById("{{ form.phone.id_for_label }}").addEventListener('input', validatePhoneNumber);
+    document.getElementById("{{ form.dob.id_for_label }}").addEventListener('change', validateDOB);
+
+    // Prevent form submission if invalid
+    document.getElementById('suspect-form').addEventListener('submit', function (event) {
+        // Trigger validation for all fields
+        const isPhoneValid = validatePhoneNumber();
+        const isDOBValid = validateDOB();
+
+        // Check if there are any invalid fields
+        if (!isPhoneValid || !isDOBValid) {
+            event.preventDefault(); // Prevent form submission if there are invalid fields
+            alert('Please correct the errors before submitting the form.');
+        }
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,91 @@
+{%  extends 'crime/StationOfficer/mainOfficer.html' %}
+
+
+{% block content %}
+<!--Message line-->
+{% block myheader %}
+{% for message in messages %}
+<div class="alert alert-success">
+  <strong>Success!</strong> {{message}}.
+</div>    
+{% endfor %}
+{% endblock %}
+<!--End of Message line-->
+	<br>
+
+<div class="row">
+
+	<div class="col-md">
+		<div class="card card-body">
+			<h5>Contact Information</h5>
+			<hr>
+			<p>Full Name:  {{suspect.f_name}} {{suspect.l_name}}</p>
+			<p>Identification: {{suspect.suspectNID}}</p>
+			<p>Phone: {{suspect.phone}}</p>
+		</div>
+	</div>
+	<div class="col-md">
+		<div class="card card-body">
+			<h5>Options:</h5>
+			<hr>
+			<a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'update_suspect' suspect.id %}">Update Suspect</a>
+			<a class="btn btn-outline-danger  btn-sm btn-block" href="{% url 'witnes' suspect.id %}">Link with Witness</a>
+			<a class="btn btn-outline-warning  btn-sm btn-block" href="{% url 'create_evidence' suspect.id %}">Link To Evidence</a>
+
+		</div>
+	</div>
+
+	<div class="col-md">
+		<div class="card card-body">
+			<h5>Suspect Parents</h5>
+			<hr>
+			<p>Father:  {{suspect.father_name}}</p>
+			<p>Mother:  {{suspect.mother_name}}</p>
+			<p>Location:  {{suspect.province}},{{suspect.district}},{{suspect.sector}}{{suspect.cell}},{{suspect.village}}</p>
+		</div>
+	</div>
+</div>
+
+
+<br>
+<div class="row">
+	<div class="col">
+		<div class="card card-body">
+			<form method="get">
+			<h5>The Suspect <strong>"{{suspect.l_name}} {{suspect.f_name}}</strong>" has the following Evidences</h5>
+			
+		  </form>
+		</div>
+	</div>
+	
+</div>
+<br>
+
+<div class="row">
+	<div class="col-md">
+		<div class="card card-body">
+			<table class="table table-sm">
+
+					<th>Suspect</th>
+					<th>Evidence Type</th>
+					<th>Notes on the Evidence</th>
+					 <th>Evidence Photo</th>
+				
+				</tr>
+				{% for evidence in evidences %}
+
+				<tr>
+					<td>{{suspect.f_name}} {{suspect.l_name}}</td>
+					<td>{{evidence.evidenceCategory }}</td>
+					<td>{{evidence.evidence_note}}</td>
+					<td><img src="{{evidence.evidencerimage.url}}" alt="Evidence Photo" width="90" height="50"></td>
+					<td>
+					</td>
+
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

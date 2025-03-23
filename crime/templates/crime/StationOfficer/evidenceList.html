@@ -1,0 +1,51 @@
+{%  extends 'crime/StationOfficer/mainOfficer.html' %}
+
+{% block content %}
+<!--Message line-->
+{% block myheader %}
+{% for message in messages %}
+<div class="alert alert-success">
+  <strong>Success!</strong> {{message}}.
+</div>    
+{% endfor %}
+{% endblock %}
+<!--End of Message line-->
+		<br>
+
+		<div class="row">
+			<div class="col-md">
+				<div class="card card-body">
+					<h5>Crime Evidence</h5>
+					{% comment %} <a class="btn btn-sm btn-info" href="{% url 'create_evidence'%}">Link with Suspect</a> {% endcomment %}
+				</div>
+				<div class="card card-body">
+					<table class="table">
+						<tr>
+                            {% comment %} <th>Suspect</th> {% endcomment %}
+                            <th>Title</th>
+							
+                            <th>Evidence Category</th>
+							<th>Evidence Note</th>
+                            {% comment %} <th>Image</th> {% endcomment %}
+							<th>Level</th>	
+							<th>Update</th>							
+						</tr>
+						{% for evidence in evidences %}
+							<tr>
+								{% comment %} <td>{{i.suspect}}</td> {% endcomment %}
+								<td>{{evidence.title}}</td>
+								<td>{{evidence.evidenceCategory}}</td>
+								<td>{{evidence.evidence_note}}</td>
+                                {% comment %} <td><img src="{{evidencerimage.url}}" alt="Evidence Photo" width="90" height="50"></td> {% endcomment %}
+                                <td>{{evidence.level}}</td>
+								<td><a class="btn btn-sm btn-info" href="{% url 'update_evidence' evidence.id %}">Update</a></td>
+							</tr>
+						{% endfor %}
+						
+					</table>
+				</div>
+			</div>
+			
+		</div>
+
+{% endblock content %}

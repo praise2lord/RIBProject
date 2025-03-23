@@ -1,0 +1,24 @@
+{% extends 'crime/RIBStation/mainStation.html' %}
+{% load static %}
+{% block content %}
+
+<br><center>
+<div class="row">
+	<div class="col-md-12">
+		<div class="card card-body">
+
+
+			<p>Are you sure you want to delete case <strong>"{{item}} where  {{ item.case_desc }}"</strong>?</p>
+
+			<form action="{% url 'delete_case' item.id  %}" method="POST">
+				
+				{% csrf_token %}
+				<a class="btn btn-warning" href="{% url 'home_Station' %}">Cancel</a>&nbsp;&nbsp;
+
+				<input class="btn btn-danger" type="submit" name="Confirm">
+			</center></form>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

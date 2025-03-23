@@ -1,0 +1,186 @@
+{% extends 'crime/RIBHQ/mainHq.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+<h5>These are our Commanders </h5>{{officers}}
+<h5>In these RIBStations</h5>{{stations}}
+<h5>We have these Cases</h5>{{cases}}
+<h5>And with those cases We have these suspect</h5>{{suspects}}
+
+
+{% block content %}
+
+		<div class="row">
+			<div class="col-md">
+				<div class="card card-body">
+
+					<h4>All RIBStation Commanders In RWANDA</h4>
+          <table><tr><td>
+          <a class="btn btn-warning" href="{% url 'home_Hq' %}">Close</a></tr></td>
+          <tr><td><a class="btn btn-primary  btn-sm btn-block" href="{% url 'printOfficerHQ' %}">Generate PDF</a>
+          </tr></td></table>
+				</div>
+				<div class="card card-body">
+					<table class="table">
+						<tr>
+             				 <th>Officer ID</th>
+							<th>Full Names</th>
+							<th>Recruit Year</th>	
+              				<th>Rank</th>	
+             				<th>RIBStation</th>						
+						</tr>
+						{% for officer in officers %}
+							<tr>
+								<td>{{officer.OfficerNationalId}}</td>
+								<td>{{officer.f_name}} {{officer.l_name}}</td>
+								<td>{{officer.recruit_year}}</td>
+                				<td>{{officer.rank}}</td>
+                				<td>{{officer.ribstation}}</td>
+							</tr>
+						{% endfor %}
+						
+					</table>
+				</div>
+			</div>
+			
+		</div>
+<br><br>
+   
+    <div class="row">
+			<div class="col-md">
+				<div class="card card-body">
+
+					<h5>All RIBStations In RWANDA</h5>
+          <table><tr><td>
+            <a class="btn btn-warning" href="{% url 'home_Hq' %}">Close</a></tr></td>
+            <tr><td><a class="btn btn-primary  btn-sm btn-block" href="{% url 'printRIBStationHQ' %}">Generate PDF</a>
+            </tr></td></table>
+				</div>
+				<div class="card card-body">
+					<table class="table">
+						<tr>
+                            <th>Station User</th>
+							<th>Station Name</th>
+							<th>Province</th>							
+						</tr>
+						{% for station in stations %}
+							<tr>
+								<td>{{station.user}}</td>
+								<td>{{station.station_name}}</td>
+								<td>{{station.province}}</td>
+							</tr>
+						{% endfor %}
+						
+					</table>
+				</div>
+			</div>
+			
+		</div>
+
+    <div class="row">
+			<div class="col-md">
+				<div class="card card-body">
+
+					<h5>Existing Cases in All RIBStation</h5>
+          <table><tr><td>
+            <a class="btn btn-warning" href="{% url 'home_Hq' %}">Close</a></tr></td>
+            <tr><td><a class="btn btn-primary  btn-sm btn-block" href="{% url 'printCasaesHQ' %}">Generate PDF</a>
+            </tr></td></table>
+				</div>
+				<div class="card card-body">
+					<table class="table">
+						<tr>
+              <th>Case Number</th>
+							<th>Case Type</th>
+							<th>RIBStation</th>
+						</tr>
+						{% for case in cases %}
+							<tr>
+								<td>{{case.case_name}}</td>
+								<td>{{case.crimeType}}</td>
+                <td>{{case.ribstation}}</td>
+			
+							</tr>
+						{% endfor %}
+						
+					</table>
+				</div>
+			</div>
+			
+		</div>
+
+    <div class="row">
+			<div class="col-md">
+				<div class="card card-body">
+
+					<h5>All suspect in All Cases</h5>
+          <table><tr><td>
+            <a class="btn btn-warning" href="{% url 'home_Hq' %}">Close</a></tr></td>
+            <tr><td><a class="btn btn-primary  btn-sm btn-block" href="{%  url 'printSuspectsHQ' %}">Generate PDF</a>
+            </tr></td></table>
+				</div>
+				<div class="card card-body">
+					<table class="table">
+						<tr>
+              <th>Suspect ID</th>
+							<th>Full Name</th>
+							<th>Phone</th>
+              <th>Date Arrested</th>
+              <th>RIBStation</th>
+              <th>Officer Incharge</th>
+						</tr>
+						{% for suspect in suspects %}
+							<tr>
+								<td>{{suspect.suspectNID}}</td>
+								<td>{{suspect.f_name}} {{suspect.l_name}}</td>
+                <td>{{suspect.phone}}</td>
+                <td>{{suspect.date_arrested}}</td>
+                <td>{{suspect.ribstation}}</td>
+                <td>{{suspect.stationuser}}</td>
+			
+							</tr>
+						{% endfor %}
+						
+					</table>
+				</div>
+			</div>
+			
+		</div>
+
+    <div class="row">
+			<div class="col-md">
+				<div class="card card-body">
+
+					<h5>All of Witness of the Suspect in All Cases</h5>
+          <table><tr><td>
+            <a class="btn btn-warning" href="{% url 'home_Hq' %}">Close</a></tr></td>
+            <tr><td><a class="btn btn-primary  btn-sm btn-block" href="{% url 'printWitnessHQ' %}">Generate PDF</a>
+            </tr></td></table>
+				</div>
+				<div class="card card-body">
+					<table class="table">
+						<tr>
+              <th>Witness ID</th>
+							<th>Full Name</th>
+							<th>Phone</th>
+              <th>Supporter?</th>
+              <th>Summary</th>
+						</tr>
+						{% for reporter in reporters %}
+							<tr>
+								<td>{{reporter.reporterNID}}</td>
+								<td>{{reporter.f_name}} {{suspect.l_name}}</td>
+                <td>{{reporter.phone}}</td>
+                <td>{{reporter.vote}}</td>
+                <td>{{reporter.note}}</td>
+			
+							</tr>
+						{% endfor %}
+						
+					</table>
+				</div>
+			</div>
+			
+		</div>
+
+{% endblock content %}

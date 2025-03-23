@@ -1,0 +1,92 @@
+{%  extends 'crime/StationOfficer/mainOfficer.html' %}
+
+
+{% block content %}
+{% load static %}
+<center>
+ <img src="{% static 'images/loading.gif' %} "alt="logo" height="110" width="110">
+	<br>
+    <tr><a class="btn btn-primary  btn-sm btn-block" href='{% url 'primaryOrReleaseReport' suspect.id %}' target="_blank">Generate Suspect Decision on PDF</a>
+
+<div class="row">
+    <div class="col-md">
+		<div class="card card-body">
+			<h5>Contact Information</h5>
+			<hr>
+			<p>Full Name:  {{suspect.f_name}} {{suspect.l_name}}</p>
+			<p>Identification: {{suspect.suspectNID}}</p>
+			<p>Phone: {{suspect.phone}}</p>
+		</div>
+	</div>
+	<div class="col-md">
+        
+		 <div class="card card-body">
+                    <!--Message line-->
+            {% block myheader %}
+            {% for message in messages %}
+            <div class="alert alert-success">
+            <strong>Success!</strong> {{message}}.
+            </div>    
+            {% endfor %}
+            {% endblock %}
+            <!--End of Message line-->
+         </div>
+	</div>
+
+
+
+	<div class="col-md">
+		<div class="card card-body">
+			<h5>Suspect Parents</h5>
+			<hr>
+			<p>Father:  {{suspect.father_name}}</p>
+			<p>Mother:  {{suspect.mother_name}}</p>
+			<p>Location:  {{suspect.province}},{{suspect.district}},{{suspect.sector}}{{suspect.cell}},{{suspect.village}}</p>
+		</div>
+	</div>
+</div>
+
+
+<br>
+<div class="row">
+	<div class="col">
+		<div class="card card-body">
+			<form method="get">
+			<h5>The Suspect <strong>"{{suspect.l_name}} {{suspect.f_name}}</strong>" has the following Evidences</h5>
+			
+		  </form>
+		</div>
+	</div>
+	
+</div>
+{% comment %} <br>
+
+<div class="row">
+	<div class="col-md">
+		<div class="card card-body">
+			<table class="table table-sm">
+
+					
+					<th>Suspect</th>
+					<th>Evidence Type</th>
+					<th>Notes on the Evidence</th>
+					 <th>Evidence Photo</th>
+				
+				</tr>
+				{% for evidence in evidences %}
+
+				<tr>
+					<td>{{suspect.f_name}} {{suspect.l_name}}</td>
+					<td>{{evidence.evidenceCategory }}</td>
+					<td>{{evidence.evidence_note}}</td>
+					<td><img src="{{request.user.evidence.evidencerimage.url}}" ></td>
+					<td>
+					</td>
+								</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+</div> {% endcomment %}
+
+{% endblock %}

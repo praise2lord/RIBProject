@@ -1,0 +1,83 @@
+<br>
+<style>
+#all-cases{
+    background-color: #13e973;
+}
+
+
+#all-ribstation{
+    background-color: #7abecc;
+}
+
+#all-officers{
+    background-color: #7CD1C0;
+}
+</style>
+<div class="row">
+	<div class="col">
+		<div class="col-md">
+			<div class="card text-center text-white  mb-3" id="all-cases">
+			  	<div class="card-header">
+					<h5 class="card-title">All RIB Station</h5>
+			  	</div>
+			  	<div class="card-body">
+			    	<h3 class="card-title">{{stations.count}}</h3>
+			  	</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="col">
+		<div class="col-md">
+			<div class="card text-center text-white  mb-3" id="all-ribstation">
+			  	<div class="card-header">
+			  		<h5 class="card-title">All Closed Cases</h5>
+			  	</div>
+			  	<div class="card-body">
+			    	<h3 class="card-title">{{finished}}</h3>
+			  	</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col">
+		<div class="col-md">
+			<div class="card text-center text-white  mb-3" id="all-ribstation">
+			  	<div class="card-header">
+			  		<h5 class="card-title">All Ongoing Cases</h5>
+			  	</div>
+			  	<div class="card-body">
+			    	<h3 class="card-title">{{studied}}</h3>
+			  	</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col">
+		<div class="col-md">
+			<div class="card text-center text-white  mb-3" id="all-ribstation">
+			  	<div class="card-header">
+			  		<h5 class="card-title">New Opened Cases</h5>
+			  	</div>
+			  	<div class="card-body">
+			    	<h3 class="card-title">{{pending}}</h3>
+			  	</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col">
+		<div class="col-md">
+			<div class="card text-center text-white  mb-3" id="all-officers">
+			  	<div class="card-header">
+			  		<h5 class="card-title">All Suspects</h5>
+			  	</div>
+			  	<div class="card-body">
+			    	<h3 class="card-title">{{suspects.count}}</h3>
+			  	</div>
+			</div>
+		</div>
+	</div>
+</div>

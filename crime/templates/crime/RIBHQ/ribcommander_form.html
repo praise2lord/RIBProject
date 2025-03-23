@@ -1,0 +1,75 @@
+{% extends 'crime/RIBHQ/mainHQ.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<!--Message line-->
+{% block myheader %}
+{% for message in messages %}
+<div class="alert alert-success">
+  <strong>Success!</strong> {{message}}.
+</div>    
+{% endfor %}
+{% endblock %}
+<!--End of Message line-->
+<style>
+
+    form button{
+        margin-right: 170px;
+    }
+
+    .contain{
+        display: flex;
+    }
+    .form-group {
+        width: 70%;
+    }
+
+</style>
+<br> <br> 
+      {% comment %} <a href="{% url 'register_ribofficer' %}" class="btn btn-primary" style="float: right;">Add Rib Officer User</a> <br> <br> {% endcomment %}
+
+<div class="row">
+
+<h1>RIB Commander User Registration</h1>
+
+	<div class="col-md-12">
+		<div class="card card-body">
+            
+			<form action="{% url 'createRIBCommander' %}" method="POST" enctype="multipart/form-data">
+				{% csrf_token %}
+				<div class="contain">
+				<div class="form-group">
+                {{form.user|as_crispy_field}}
+				{{form.OfficerNationalId|as_crispy_field}}
+				{{form.f_name|as_crispy_field}}
+				</div>
+
+                <div class="form-group">
+				{{form.l_name|as_crispy_field}}
+				{{form.gender|as_crispy_field}}				
+				{{form.phone|as_crispy_field}}
+				</div>
+
+                <div class="form-group">
+				{{form.email|as_crispy_field}}				
+				{{form.rank|as_crispy_field}}
+				{{form.recruit_year|as_crispy_field}}
+				</div>
+
+                <div class="form-group">
+				{{form.ribstation|as_crispy_field}}
+				{{form.officerimage|as_crispy_field}}
+				
+
+						
+				<center>
+				<a class="btn btn-warning" href="{% url 'createRIBStation' %}">Cancel</a>&nbsp;&nbsp;
+				<input type="submit" name="Submit" class="btn btn-info"></div>
+			</form>
+
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}

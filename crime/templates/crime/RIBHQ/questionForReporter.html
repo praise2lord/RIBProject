@@ -1,0 +1,26 @@
+{% extends 'crime/RIBHQ/mainHq.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="card card-body">
+
+			<form action="" method="POST">
+				{% csrf_token %}
+				{{form.crimeType|as_crispy_field}}
+				{{form.questionId|as_crispy_field}}
+				{{form.questionName|as_crispy_field}}
+				<center>
+				<a class="btn btn-warning" href="{% url 'QuestionRepoList' %}">Cancel</a>
+				<input type="submit" name="Submit" class="btn btn-info">
+			</form>
+
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}

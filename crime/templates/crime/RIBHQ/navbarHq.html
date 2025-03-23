@@ -1,0 +1,62 @@
+{% load static %}
+
+{% block styles %}
+  <style>
+    .active {
+      background-color: blue;
+    }
+  </style>
+{% endblock styles %}
+ <img src="{% static 'images/hd.jpg' %}"alt="logo" height="70" width="1550">
+ <center><b>{{today}}</b></center>
+ {% comment %} navbar-expand-lg {% endcomment %}
+<nav class="navbar  navbar-expand-lg   navbar-dark bg-dark">
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="{% if 'home_Hq' in request.path %} nav-item active {% endif %}">
+        <a class="nav-link" href="{% url 'home_Hq' %}">Dashboard </a>
+      </li>
+      <li class="{% if 'RIBstationList' in request.path %} nav-item active {% endif %}">
+        <a class="nav-link" href="{% url 'RIBstationList' %}">RIB Stations</a>
+      </li>
+      <li class="{% if 'officerListHQ' in request.path %} nav-item active {% endif %}">
+        <a class="nav-link" href="{% url 'officerListHQ' %}">Station Officers</a>
+      </li>
+      <li class="{% if 'CrimeList' in request.path %} nav-item active {% endif %}">
+        <a class="nav-link" href="{% url 'CrimeList' %}">RIB Crimes</a>
+      </li>
+      <li class="{% if 'QuestionSuspList' in request.path %} nav-item active {% endif %}">
+        <a class="nav-link" href="{% url 'QuestionSuspList' %}">Suspect Questions</a>
+      </li>
+      <li class="{% if 'QuestionRepoList' in request.path %} nav-item active {% endif %}">
+        <a class="nav-link" href="{% url 'QuestionRepoList' %}">Witness Questions</a>
+      </li>
+      <li class="{% if 'AnswerList' in request.path %} nav-item active {% endif %}">
+        <a class="nav-link" href="{% url 'AnswerList' %}">RIB Answers</a>
+      </li>
+      <li class="{% if 'CanceledCases' in request.path %} nav-item active  {% elif 'create_evidence' in request.path %} nav-item active {% elif 'RIBClosedCaseSuspects' in request.path %} nav-item active {% endif %}">
+        <a class="nav-link" href="{% url 'CanceledCases' %}">Cases Finished</a>
+      </li>
+      <li class="{% if 'criminalRecord' in request.path %} nav-item active {% endif %}">
+        <a class="nav-link" href="{% url 'criminalRecord' %}">Criminal Record</a>
+      </li> 
+      <li class="{% if 'generalStatisticalReport' in request.path %} nav-item active {% endif %}">
+        <a class="nav-link" href="{% url 'generalStatisticalReport' %}">General Report</a>
+      </li>
+    
+      <li class="{% if 'ribStationReport' in request.path %} nav-item active {% endif %}">
+        <a class="nav-link" href="{% url 'ribStationReport' %}">Statistical Reports</a>
+      </li>   
+                
+  </div>
+  
+   <ul class="list-unstyled CTAs">
+       {% csrf_token%}
+        <a href="{% url 'logout' %}" style="background-color: light-blue "  class="btn btn-primary btn-block mt-5" >LOGOUT {{request.user}}</a>
+      
+    </ul>
+</nav>

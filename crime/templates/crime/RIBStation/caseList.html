@@ -1,0 +1,33 @@
+{% extends 'crime/RIBStation/mainStation.html' %}
+
+{% block content %}
+
+		<br>
+
+		<div class="row">
+			<div class="col-md">
+				<div class="card card-body">
+					<h5>Crime Cases in <strong>{{user}}</strong></h5>
+				</div>
+				<div class="card card-body">
+					<table class="table">
+						<tr>
+                            <th>Comments on Crime Committed</th>
+							<th>Crime Type</th>
+							<th>Case Officer</th>							
+						</tr>
+						{% for i in cases %}
+							<tr>
+								<td>{{i.case_desc}}</td>
+								<td>{{i.crimeType}}</td>
+								<td>{{i.stationuser}}</td>
+							</tr>
+						{% endfor %}
+						
+					</table>
+				</div>
+			</div>
+			
+		</div>
+
+{% endblock content %}

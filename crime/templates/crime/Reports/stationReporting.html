@@ -1,0 +1,425 @@
+{% extends 'crime/RIBStation/mainStation.html' %}
+{% load static %}
+
+
+
+{% block jquery %}
+<script>
+    $(document).ready(function () {
+        //alert(6778)
+        $("#districts").on('change', function () {
+            var district = $("#districts").val();
+            console.log(district)
+            $.get("/dataDistrict?district=" + district, function (data, status) {
+                //$('#response').html(data)
+                $("#sectors").html(data)
+            });
+        })
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        //alert(6778)
+        $("#districts2").on('change', function () {
+            var district = $("#districts2").val();
+            console.log(district)
+            $.get("/dataDistrict?district=" + district, function (data, status) {
+                //$('#response').html(data)
+                $("#sectors2").html(data)
+            });
+        })
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        //alert(6778)
+        $("#districts3").on('change', function () {
+            var district = $("#districts3").val();
+            console.log(district)
+            $.get("/dataDistrict?district=" + district, function (data, status) {
+                //$('#response').html(data)
+                $("#sectors3").html(data)
+            });
+        })
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        //alert(6778)
+        $("#districts4").on('change', function () {
+            var district = $("#districts4").val();
+            console.log(district)
+            $.get("/dataDistrict?district=" + district, function (data, status) {
+                //$('#response').html(data)
+                $("#sectors4").html(data)
+            });
+        })
+    })
+</script>
+
+<script>
+    $(document).ready(function () {
+        //alert(6778)
+        $("#sectors").on('change', function () {
+            var sector = $("#sectors").val();
+            console.log(sector)
+            $.get("/dataSchool2?sector=" + sector, function (data, status) {
+                //$('#response').html(data)
+                $("#schools").html(data)
+            });
+        })
+    })
+</script>
+
+
+
+<script>
+    $(document).ready(function () {
+        //alert(6778)
+        $("#sectors2").on('change', function () {
+            var sector = $("#sectors2").val();
+            console.log(sector)
+            $.get("/dataSchool2?sector=" + sector, function (data, status) {
+                //$('#response').html(data)
+                $("#res2").html(data)
+            });
+        })
+    })
+
+</script>
+<script>
+    $(document).ready(function () {
+        //alert(6778)
+        $("#sectors3").on('change', function () {
+            var sector = $("#sectors3").val();
+            console.log(sector)
+            $.get("/dataSchool2?sector=" + sector, function (data, status) {
+                //$('#response').html(data)
+                $('#res4').html(data)
+                $("#res3").html(data)
+            });
+        })
+    })
+
+</script>
+<script>
+    $(document).ready(function () {
+        //alert(6778)
+        $("#sectors4").on('change', function () {
+            var sector = $("#sectors4").val();
+            console.log(sector)
+            $.get("/dataSchool2?sector=" + sector, function (data, status) {
+                //$('#response').html(data)
+                $('#res5').html(data)
+                $("#res6").html(data)
+            });
+        })
+    })
+
+</script>
+{% endblock %}
+
+{% block content %}
+<br><br>
+<div class="row">
+    <div class="col-md-4">
+        <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#myModal">
+            Generate Report Based on Selected Case
+        </button>
+        
+
+    </div>
+    <div class="col-md-4">
+        <button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#myModal2">
+            
+        </button>
+    </div>
+
+    
+    <div class="col-md-4">
+        <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#myModal3">
+            Generate Suspect Report for Two Case 
+        </button>
+    </div>
+</div>
+
+
+
+
+
+<!-- The Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Generate Case Info report</h4>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form role="search" action='{% url 'StationCaseInfo' %}'>
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="">Case:</label>
+                                <select class="form-control" name="case" id="cases">
+                                    <option selected>Select Case</option>
+                                    {% for case in cases %}
+                            <option value="{{case.id}}">{{case.case_number}}</option>
+                            {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                       
+                        <div class="row">
+                            <div class="col-md-6">
+                                
+                            </div>
+                        
+                        </div>
+
+                        <button class="btn btn-primary btn-sm">Generate Case Report</button>
+                    </form>
+
+
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+{% comment %} <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
+    <div class="modal-dialog">
+        <div class="modal-content"> {% endcomment %}
+
+            <!-- Modal Header -->
+            {% comment %} <div class="modal-header">
+                <h4 class="modal-title">Generate report based Suspects</h4>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form role="search" action='{% url 'suspectReportFromCase' %}'>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="">RIBStation:</label>
+                                <select class="form-control" name="station" id="stations">
+                                    <option selected>Select RIBStation</option>
+                                    {% for stations in rib_stations %}
+                                    <option value="{{stations.id}}">{{stations.station_name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="">Case:</label>
+                                <select class="form-control" name="case" id="cases">
+                                    <option selected>Select Case</option>
+                                    {% for case in cases %}
+                            <option value="{{case.id}}">{{case.case_name}}</option>
+                            {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+ 
+                                <button class="btn btn-primary btn-sm">Generate Suspect Report</button>
+                            </form>
+
+                    
+                    </form>
+
+                </div>
+
+            </div> {% endcomment %}
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                {% comment %} <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> {% endcomment %}
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Generate case suspect Name on selected Cases</h4>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form role="search" action='{% url 'printSuspectsOnTwoCase' %}'>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="">Case 1:</label>
+                                    <select class="form-control" name="case1" id="case1">
+                                        <option selected>Select 1st Case</option>
+                                        {% for case in cases %}
+                                <option value="{{case.id}}">{{case.case_number}}</option>
+                                {% endfor %}
+                                    </select>
+                            </div>
+                        </div>
+                    </div>
+                
+
+
+                
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="">Case 2:</label>
+                                    <select class="form-control" name="case2" id="case2">
+                                        <option selected>Select 2nd Case</option>
+                                        {% for case in cases %}
+                                <option value="{{case.id}}">{{case.case_number}}</option>
+                                {% endfor %}
+                                    </select>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+                
+
+                    <button class="btn btn-primary btn-sm">Generate Comparison Report</button>
+                </form>
+            </form>
+            </div>
+
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+
+    </div>
+</div>
+</div>
+
+
+
+
+
+
+<br><br>
+<div class="row">
+	<div class="col-md-6">
+		<canvas id="myChart" width="200" height="80"></canvas>
+	</div>
+
+	<div class="col-md-6">
+		<canvas id="myChart1" width="200" height="80"></canvas>
+	</div>
+</div>
+<br><br>
+<script>
+const ctx = document.getElementById('myChart').getContext('2d');
+const myChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Male Officers', 'Female Officers'],
+        datasets: [{
+            label: '# of Gender per RIB Station',
+            data: ['{{male}}', '{{female}}'],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+            ],
+            borderColor: [
+                'rgba(255, 99, 13, 1)',
+                'rgba(54, 162, 23, 1)',
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+const ctx1 = document.getElementById('myChart1').getContext('2d');
+const myChart1 = new Chart(ctx1, {
+    type: 'pie',
+    data: {
+        labels: ['Sergeant', 'Corporal' , 'Civilian'],
+        datasets: [{
+            label: '# of Rank Of Station RIB Officers',
+            data: ['{{Sergeant}}', '{{Corporal}}', '{{Civilian}}'],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+				'rgba(255, 99, 132, 1)',
+                
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+
+</script>
+
+{% endblock %}

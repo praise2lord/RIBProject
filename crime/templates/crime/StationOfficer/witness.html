@@ -1,0 +1,100 @@
+{% extends 'crime/StationOfficer/mainOfficer.html' %}
+
+{% block content %}
+<!-- Message line -->
+{% block myheader %}
+{% for message in messages %}
+<div class="alert alert-success">
+  <strong>Success!</strong> {{message}}.
+</div>    
+{% endfor %}
+{% endblock %}
+<!-- End of Message line -->
+<br>
+
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <h7><strong>Suspect Information</strong></h7>
+            <hr>
+            <p>Full Name: {{suspect.f_name}} {{suspect.l_name}}&nbsp;&nbsp;
+            Identification: {{suspect.suspectNID}}&nbsp;&nbsp;
+            Phone: {{suspect.phone}},&nbsp;&nbsp;&nbsp;&nbsp;
+            Father: {{suspect.father_name}},&nbsp;&nbsp;&nbsp;&nbsp;
+            Mother: {{suspect.mother_name}},&nbsp;&nbsp;&nbsp;
+            <br>
+            Location: ({{suspect.province}}, {{suspect.district}}, {{suspect.sector}}, {{suspect.cell}}, {{suspect.village}})</p>
+        </div>
+    </div>
+</div>
+
+<br>
+<div class="row">
+    <div class="col">
+        <div class="card card-body">
+            <form method="get">
+                <h5>The Suspect <strong>"{{suspect.f_name}} {{suspect.l_name}}"</strong> has the following Witnesses</h5>
+                {% comment %} <button class="btn btn-primary" type="submit">Search</button> {% endcomment %}
+            </form>
+        </div>
+    </div>
+</div>
+<br>
+
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <a class="btn btn-primary btn-sm btn-block" href="{% url 'create_reporter' suspect.id %}">Add Witness</a>
+
+            <table class="table table-sm">
+                <tr>
+                    <th>Witness ID</th>
+                    <th>Witness Name</th>
+                    <th>Witness Phone</th>
+                    <th>Witness Relation</th>
+                    <th>Is {{suspect.f_name}} guilty?</th>
+                    <th>Note</th>
+                </tr>
+                {% for reporter in reporters %}
+                <tr>
+                    <td>{{reporter.reporterNID }}</td>
+                    <td>{{reporter.f_name}} {{reporter.l_name}}</td>
+                    <td>{{reporter.phone}}</td>
+                    <td>{{reporter.relation}}</td>
+                    <td>{{reporter.vote}}</td>
+                    <td>{{reporter.note}}</td>
+                    <td><a class="btn btn-sm btn-info" href="{% url 'createCAQW' reporter.id %}">Ask Questions</a></td>
+                    <td><a class="btn btn-sm btn-info" href="{% url 'create_reporter' suspect.id %}">Link To Witness</a></td>
+                    <td><a class="btn btn-sm btn-danger" href="{% url 'delete_suspect' suspect.id %}" onclick="return confirmDeletion()">Delete</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript Validation -->
+<script>
+    // Phone number validation function for witness phone
+    function validatePhoneNumber(phoneField) {
+        const phonePattern = /^(078|079|073|072)[0-9]{7}$/; // Validating phone starts with 078, 079, 073, 072 followed by 7 digits
+        const phoneValue = phoneField.value;
+        
+        if (!phonePattern.test(phoneValue)) {
+            alert("Invalid phone number. It should start with 078, 079, 073, or 072 followed by 7 digits.");
+            phoneField.focus();
+            return false;
+        }
+        return true;
+    }
+
+
+    // Confirmation before deletion of suspect
+    function confirmDeletion() {
+        return confirm("Are you sure you want to delete this suspect?");
+    }
+
+    // You can add these validations on relevant forms if needed, but since you're primarily displaying data, validation may only be useful in 'add' or 'edit' forms.
+</script>
+
+{% endblock %}

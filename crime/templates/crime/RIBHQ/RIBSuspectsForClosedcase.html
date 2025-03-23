@@ -1,0 +1,44 @@
+{% extends 'crime/RIBHQ/mainHq.html' %}
+
+
+{% block content %}
+
+
+ <br>
+
+		<div class="row">
+			<div class="col-md">
+				<div class="card card-body">
+                    <h3>Suspects on Case with Code: " {{caseSuspects.case_number}} " Case type:" {{caseSuspects.crimeType}} " Officer: " {{officer}} "</h3>
+				</div>
+				<div class="card card-body">
+					<table class="table table-sm">
+                        <tr>
+                        <th>Suspect ID</th>
+                        <th>Suspect Name</th>
+                        <th>Phone</th>
+                        <th>Date Arrested</th>
+                        <th>Relation</th>
+                        <th>Suspect Report</th>
+                        
+                        </tr>
+                        {% for suspect in suspects %}
+                                            <tr>
+                                                <td>{{suspect.suspectNID}}</td>
+                                                <td>{{suspect.f_name}} {{suspect.l_name}}</td>
+                                                <td>{{suspect.phone}}</td>
+                                                <td>{{suspect.date_arrested}}</td>                                    
+                                                <td>{{suspect.relation}}</td>
+                                                <td>{{suspect.suspect_status}}</td>
+                               
+                                            </tr>
+                                        {% endfor %}
+                                        {% comment %} <a class="btn btn-sm btn-info" href="{% url 'presentPrimarySuspect'%}">Present Primary Suspects on this case</a> {% endcomment %}
+
+                        </table>
+				</div>
+			</div>
+			
+		</div>
+
+{% endblock %}
