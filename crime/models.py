@@ -12,7 +12,9 @@ GENDER = [
 
 SUSPECTSTATUS = [
     ("free", "free"),
+    ("freeFromCase", "freeFromCase"),    
     ("middle", "middle"),
+    ("middleFromCase", "middleFromCase"),    
     ("primary_suspect", "primary_suspect"),
 ]
 
@@ -47,7 +49,6 @@ CRIMETYPE = [
     ("Robbery", "Robbery"),
     ("Violent", "Violent"),
     ("Murder", "Murder"),
-    # ("Cyber", "Cyber"),
     ]
 STATUS = [
     ("Pending", "Pending"),

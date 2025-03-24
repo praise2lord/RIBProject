@@ -423,9 +423,9 @@ def createCase(request):
             caseName = request.POST['case_name']
             ribName = request.POST['victim_address']
 
-            send_sms_to_reporter(reporterPhoneNumber, reporterName, caseName, ribName)
-            messages.success(request, 'Case has been Initiated Successfully and Reporter has been Notified')
-            return redirect('caseList')
+            # send_sms_to_reporter(reporterPhoneNumber, reporterName, caseName, ribName)
+            # messages.success(request, 'Case has been Initiated Successfully and Reporter has been Notified')
+            # return redirect('caseList')
 			 # Send an email to the reporter
             subject = f"Case {case.case_number} has been Initiated"
             message = f"Dear {reporterName},\n\nYour case '{caseName}' has been successfully initiated with case number {case.case_number}. We will keep you updated on the progress.\n\nRegards,\nRIBStation"
@@ -640,7 +640,7 @@ def find_primary_suspects(request, suspect_pk):
 	elif total_rate >=25 and total_rate < 50 :
 		#implement status middle status continue investigation
 		print("Continue investigation to suspect")
-		suspect_for_update.suspect_status = 'middle'
+		suspect_for_update.suspect_status = 'middleFromCase'
   
   		#suspect release date update
 		today = datetime.datetime.now()  
@@ -648,7 +648,7 @@ def find_primary_suspects(request, suspect_pk):
 		suspect_for_update.save()
 	else:
 		# implement Free
-		suspect_for_update.suspect_status = 'free'
+		suspect_for_update.suspect_status = 'freeFromCase'
   
 		#suspect release date update
 		today = datetime.datetime.now()  

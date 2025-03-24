@@ -49,7 +49,7 @@
             The case code <strong>{{case}}</strong> of <strong>{{case.crimeType}}</strong> as crime type {% if suspect.suspect_status == "Free of Crime" %}
             that you were suspected {% elif suspect.suspect_status == "Primary Suspect" %} you are being suspected {% endif %}, also with victim {% if suspect.suspect_status == "Free of Crime" %}
             was {% elif suspect.suspect_status == "Primary Suspect" %} is {% endif %} <strong>{{case.victim_name}}</strong> who was born in <strong>{{case.victim_age}}</strong> living in {{case.victim_address}}. 
-            This case {% if suspect.suspect_status == "free" %} were being monitored and cloded by 
+            This case {% if suspect.suspect_status == "freeFromCase" %} were being monitored and cloded by 
             {% elif suspect.suspect_status == "primary_suspect" %}  is being monitored and it has been sent to court by Officer{% endif %} <strong>{{case.stationuser.l_name}} {{case.stationuser.f_name}}</strong> who works at <strong>{{case.ribstation}}</strong></p>
 
             {% if reporters %}
@@ -74,10 +74,10 @@
             
             <br>
             <p style="line-height: 1.8; font-size: 11px;">
-            {% if suspect.suspect_status == "free" %} This is officialy prove that <strong>you are Free from the above case</strong> for the reason of processes went through to find primary suspects
+            {% if suspect.suspect_status == "freeFromCase" %} This is officialy prove that <strong>you are Free from the above case</strong> for the reason of processes went through to find primary suspects
             {% elif suspect.suspect_status == "primary_suspect" %} This is officialy prove that <strong>you are a Primary suspect from the above case</strong> for the reason of the processes went through to Find the primary suspects and your Case Files have been sent to court              
             
-            {% elif suspect.suspect_status == "middle" %} This is officialy prove that <strong>you are neither a Primary suspect from the above case nor Free</strong> for the reason of the processes went through to find the Primary suspects and Thus case needs to be well investigated deeply{% endif %}</p>
+            {% elif suspect.suspect_status == "middleFromCase" %} This is officialy prove that <strong>you are Not a Primary suspect from the above case But Free for a while</strong> for the reason of the processes went through to find the Primary suspects and Thus This case needs to be deeply investigated. {% endif %}</p>
 
         </div>
 
