@@ -379,6 +379,14 @@ def suspect(request, pk_susp):
     evidence_count = evidences.count()
     context = {'suspect':suspect,'evidences':evidences,'evidence_count':evidence_count}
     return render(request, 'crime/StationOfficer/suspect.html',context)
+@login_required(login_url='login_view')
+@allowed_users(allowed_roles=['StationUser'])
+def view(request, pk_susp):
+    suspect = Suspect.objects.get(id=pk_susp)
+    evidences = suspect.evidences.all()
+    evidence_count = evidences.count()
+    context = {'suspect':suspect,'evidences':evidences,'evidence_count':evidence_count}
+    return render(request, 'crime/StationOfficer/view.html',context)
 
 @login_required(login_url='login_view')
 @allowed_users(allowed_roles=['StationUser'])
@@ -423,9 +431,9 @@ def createCase(request):
             caseName = request.POST['case_name']
             ribName = request.POST['victim_address']
 
-            # send_sms_to_reporter(reporterPhoneNumber, reporterName, caseName, ribName)
-            # messages.success(request, 'Case has been Initiated Successfully and Reporter has been Notified')
-            # return redirect('caseList')
+            send_sms_to_reporter(reporterPhoneNumber, reporterName, caseName, ribName)
+            messages.success(request, 'Case has been Initiated Successfully and Reporter has been Notified')
+            return redirect('caseList')
 			 # Send an email to the reporter
             subject = f"Case {case.case_number} has been Initiated"
             message = f"Dear {reporterName},\n\nYour case '{caseName}' has been successfully initiated with case number {case.case_number}. We will keep you updated on the progress.\n\nRegards,\nRIBStation"
@@ -768,54 +776,80 @@ def AnswerList(request):
 @login_required(login_url='login_view')
 @allowed_users(allowed_roles=['StationUser'])
 def createCAQS(request, pk_suspect, crimeType):
-	questions = QuestionSuspect.objects.all()
-	QuestionFormSet = inlineformset_factory(Suspect, CAQS, fields=('question', 'answer'), extra=questions.count() )
-	suspect = Suspect.objects.get(id=pk_suspect)
-	formset = QuestionFormSet(queryset=CAQS.objects.filter(question__crimeType=crimeType),instance=suspect)
-	if request.method == 'POST':
-		formset = QuestionFormSet(request.POST,instance=suspect)
+    user = request.user
+    stationuser = StationUser.objects.get(user=user)
 
-		if formset.is_valid():	
-			count=0
-			not_applied=0
-			for form in formset:
-				
-				if str(form.cleaned_data['answer']) == "yes":
-					count+=1
-				elif str(form.cleaned_data['answer']) == "not_applied":
-					not_applied+=1
-					
+    # Get all questions related to this crime type
+    questions = QuestionSuspect.objects.all()
+    
+    # Define the formset for the `CAQS` model
+    QuestionFormSet = inlineformset_factory(Suspect, CAQS, fields=('question', 'answer'), extra=questions.count())
+    
+    # Retrieve the suspect
+    suspect = Suspect.objects.get(id=pk_suspect)
+    
+    # Create the formset instance
+    formset = QuestionFormSet(queryset=CAQS.objects.filter(question__crimeType=crimeType), instance=suspect)
+    
+    if request.method == 'POST':
+        formset = QuestionFormSet(request.POST, instance=suspect)
 
-				form.save()
+        if formset.is_valid():
+            count = 0
+            not_applied = 0
+            
+            # Iterate through the formset and process the forms
+            for form in formset:
+                # Access the individual form's cleaned data
+                answer = form.cleaned_data.get('answer')
+                
+                # Calculate the count and not_applied values
+                if str(answer) == "yes":
+                    count += 1
+                elif str(answer) == "not_applied":
+                    not_applied += 1
+                
+                # Access the CAQS instance behind the form and assign ribstation and stationuser
+                caqs_instance = form.save(commit=False)
+                caqs_instance.ribstation = stationuser.ribstation  # Assign the ribstation of the logged-in user
+                caqs_instance.stationuser = stationuser  # Assign the stationuser of the logged-in user
+                caqs_instance.save()  # Save the form instance
 
-			print(not_applied)
-			print(questions.count())
-			print(count)
+            # Calculate the total number of applicable questions (excluding "not_applied")
+            questionsTotal = questions.count() - not_applied
 
-			questionsTotal = questions.count() - not_applied
-			
+            # Calculate the rate based on "yes" answers, and return the rate out of 50
+            rate = 50 * float(count) / float(questionsTotal) if questionsTotal > 0 else 0
+            Suspect.objects.filter(id=pk_suspect).update(crime_rate=rate)
 
-			"""
-			  calculate the rate over 50 of from suspect answers
-			  find the average based on lenght of questions.
-			  and return the rate of Yes ones. means total marks will be
-			  calculated out of 50.
-			"""
-			rate = 50 * float(count)/float(questionsTotal)
-			Suspect.objects.filter(id=pk_suspect).update(crime_rate=rate)
-			
-			messages.success(request, 'Questions have been Linked to Suspect Successfully')
-			return redirect('CAQSList')	
-	
-	context = {'form':formset, 'suspect':suspect}
-	return render(request, 'crime/StationOfficer/cransquestsusp_Form.html', context)
+            # Update the suspect status to "asked"
+            suspect.suspect_status = "asked"
+            suspect.save()  # Save the updated suspect instance
+
+            messages.success(request, 'Questions have been Linked to Suspect Successfully')
+            return redirect('CAQSList')
+
+    context = {'form': formset, 'suspect': suspect}
+    return render(request, 'crime/StationOfficer/cransquestsusp_Form.html', context)
 
 
 @login_required(login_url='login_view')
 @allowed_users(allowed_roles=['StationUser'])
 def CAQSList(request):
-    quesans = CAQS.objects.all()
-    return render(request, 'crime/StationOfficer/questAnsList.html', {'quesans':quesans})
+    user = request.user
+    rib_user = StationUser.objects.get(user=user)
+    
+    # If you want to filter by a specific suspect
+    suspect_id = request.GET.get('suspect_id')  # Assuming the suspect ID is passed as a query parameter
+    if suspect_id:
+        # Filter based on both stationuser and suspect
+        quesans = CAQS.objects.filter(stationuser=rib_user, suspect__id=suspect_id)
+    else:
+        # If no suspect is provided, just filter by the stationuser
+        quesans = CAQS.objects.filter(stationuser=rib_user)
+
+    return render(request, 'crime/StationOfficer/questAnsList.html', {'quesans': quesans})
+
 
 
 @login_required(login_url='login_view')
@@ -1515,7 +1549,7 @@ def primaryOrReleaseReport(request, pk_suspect):
 	# reporterPhoneNumber = request.POST['reporter_phone']
 	# reporterName = request.POST['reporter_name']
 	# caseName = request.POST['case_name']
-	# ribName = request.POST['victim_address']
+	# ribName = request.POST['ribstation']
 
 	# send_sms_to_close(reporterPhoneNumber,reporterName,caseName,ribName)
 

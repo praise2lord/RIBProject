@@ -11,6 +11,7 @@ GENDER = [
 ]
 
 SUSPECTSTATUS = [
+    ("asked", "asked"),
     ("free", "free"),
     ("freeFromCase", "freeFromCase"),    
     ("middle", "middle"),
@@ -145,7 +146,7 @@ class Reporter(models.Model):
     f_name = models.CharField(max_length=30, blank=False)
     l_name = models.CharField(max_length=30, blank=False)
     gender = models.CharField(max_length=1, choices=GENDER)
-    email = models.CharField(max_length=30, blank=False)
+    email = models.CharField(max_length=30, blank=True)
     phone =  models.CharField(max_length=10, blank=False)
     relation = models.CharField(max_length=30, blank=False)   
     vote = models.CharField(max_length=3, choices=VOTE)
@@ -315,7 +316,7 @@ class QuestionSuspect(models.Model):
     questionId = models.CharField(max_length=4 ,null=True, unique=True, blank=True)
     questionName = models.TextField(blank=False)
     crimeType = models.CharField(max_length=40, blank=True, null=True, choices=CRIMETYPE)
-        
+    
     def __str__(self):
         return self.questionName 
 
@@ -333,6 +334,9 @@ class CAQS(models.Model):
     question = models.ForeignKey(QuestionSuspect, on_delete=models.CASCADE, null=True, blank=True)
     suspect = models.ForeignKey(Suspect, on_delete=models.CASCADE, null=True, blank=True)
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE, null=True, blank=True)
+    ribstation = models.ForeignKey(RIBStation, on_delete=models.CASCADE, null=True, blank=True)
+    stationuser = models.ForeignKey(StationUser, on_delete=models.CASCADE, null=True, blank=True)
+    
         
     # def __str__(self):
     #     return self.question

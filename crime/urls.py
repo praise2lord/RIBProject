@@ -29,13 +29,14 @@ urlpatterns = [
     path('createStationName/', views.createStationName, name="createStationName"),
     path('createRIBStation/', views.createRIBStation, name="createRIBStation"),
     path('createRIBCommander/', views.createRIBCommander, name="createRIBCommander"),
-    
     path('createOfficer/', views.createOfficer, name="createOfficer"),
     path('officerList/', views.officerList, name="officerList"),
     path('officerListHQ/', views.officerListHQ, name="officerListHQ"),
     path('CanceledCases/', views.CanceledCases, name="CanceledCases"),
     path('RIBstationList/', views.RIBstationList, name="RIBstationList"),
     path('suspect/<str:pk_susp>/', views.suspect, name="suspect"),
+    path('view/<str:pk_susp>/', views.view, name="view"),
+    
     path('witnes/<str:pk_susp>/', views.witnes, name="witnes"),
     path('caseList/', views.caseList, name="caseList"),
     path('evidence/', views.evidenceList, name="evidence"),

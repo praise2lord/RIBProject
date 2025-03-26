@@ -149,11 +149,7 @@ function validateReporterID() {
         const isEmailValid = validateEmail();
         const isReporterIDValid = validateReporterID();
 
-        // Check if there are any invalid fields
-        if (!isPhoneValid || !isEmailValid || !isReporterIDValid) {
-            event.preventDefault(); // Prevent form submission if there are invalid fields
-            alert('Please correct the errors before submitting the form.');
-        }
+       
     });
 </script>
 

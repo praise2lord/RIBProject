@@ -49,6 +49,7 @@
                 <div class="contain">
                     <div class="form-group">
                         {{ form.suspectNID|as_crispy_field }}
+                        <div id="suspect-error-message" class="error-message">Valid ID number (Should be 16 Numbers).</div>
                         {{ form.f_name|as_crispy_field }}
                         {{ form.l_name|as_crispy_field }}
                         {{ form.gender|as_crispy_field }}
@@ -157,6 +158,38 @@
         errorMessage.style.display = "none";
         return true;
     }
+     // Suspect ID validation (must be exactly 16 digits, starting with 1, and contain only numbers)
+function validatesuspectNID() {
+    const suspectNIDField = document.getElementById("{{ form.suspectNID.id_for_label }}");
+    const suspectNIDValue = suspectNIDField.value;
+    const suspectNIDPattern = /^1\d{15}$/; // Starts with 1 and followed by exactly 15 digits
+    const errorMessage = document.getElementById("suspect-id-error-message");
+
+    // Check if the value contains any letters or non-numeric characters
+    const nonNumericPattern = /[^0-9]/; // This pattern checks for any non-numeric character
+    if (nonNumericPattern.test(suspectNIDValue)) {
+        suspectNIDField.classList.add("invalid");
+        errorMessage.textContent = "Suspect ID must contain only numbers.";
+        errorMessage.style.display = "block";
+    } else {
+        // If the Suspect ID starts with something other than '1', show the error message
+        if (suspectNIDValue[0] !== '1') {
+            suspectNIDField.classList.add("invalid");
+            errorMessage.textContent = "Suspect ID must start with '1'.";
+            errorMessage.style.display = "block";
+        } else {
+            // Only validate when the input length reaches 16 digits (i.e., when the user has entered enough data to evaluate)
+            if (suspectNIDValue.length === 16 && !suspectNIDPattern.test(suspectNIDValue)) {
+                suspectNIDField.classList.add("invalid");
+                errorMessage.textContent = "Suspect ID must be exactly 16 digits.";
+                errorMessage.style.display = "block";
+            } else {
+                suspectNIDField.classList.remove("invalid");
+                errorMessage.style.display = "none";
+            }
+        }
+    }
+}
 
     // Add event listeners to the fields
     document.getElementById("{{ form.phone.id_for_label }}").addEventListener('input', validatePhoneNumber);
@@ -169,10 +202,10 @@
         const isDOBValid = validateDOB();
 
         // Check if there are any invalid fields
-        if (!isPhoneValid || !isDOBValid) {
+        {% comment %} if (!isPhoneValid || !isDOBValid) {
             event.preventDefault(); // Prevent form submission if there are invalid fields
             alert('Please correct the errors before submitting the form.');
-        }
+        } {% endcomment %}
     });
 </script>
 
